@@ -24,10 +24,12 @@ import PricingStyle3PageConfig from './pricing/style-3/PricingStyle3PageConfig';
 import ProfilePageConfig from './profile/ProfilePageConfig';
 import ClassicSearchPageConfig from './search/classic/ClassicSearchPageConfig';
 import ModernSearchPageConfig from './search/modern/ModernSearchPageConfig';
-import CategoryPageConfig from './categories/CategoryPageConfig';
+import CategoryPageConfig from './category/CategoryPageConfig';
+import SubCategoryPageConfig from './sub-category/SubCategoryPageConfig';
 
 const pagesConfigs = [
   CategoryPageConfig,
+  SubCategoryPageConfig,
   LoginPageConfig,
   RegisterPageConfig,
   ResetPasswordPageConfig,

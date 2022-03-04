@@ -25,6 +25,13 @@ const navigationConfig = [
         url: 'pages/categories',
       },
       {
+        id: 'sub-categories',
+        title: 'Alt Kategoriler',
+        type: 'item',
+        icon: 'alarm',
+        url: 'pages/sub-categories',
+      },
+      {
         id: 'authentication',
         title: 'Authentication',
         type: 'collapse',
