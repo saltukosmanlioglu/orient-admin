@@ -32,6 +32,13 @@ const navigationConfig = [
         url: 'pages/sub-categories',
       },
       {
+        id: 'products',
+        title: 'Ürünler',
+        type: 'item',
+        icon: 'alarm',
+        url: 'pages/products',
+      },
+      {
         id: 'authentication',
         title: 'Authentication',
         type: 'collapse',

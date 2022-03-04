@@ -26,10 +26,12 @@ import ClassicSearchPageConfig from './search/classic/ClassicSearchPageConfig';
 import ModernSearchPageConfig from './search/modern/ModernSearchPageConfig';
 import CategoryPageConfig from './category/CategoryPageConfig';
 import SubCategoryPageConfig from './sub-category/SubCategoryPageConfig';
+import ProductPageConfig from './product/ProductPageConfig';
 
 const pagesConfigs = [
   CategoryPageConfig,
   SubCategoryPageConfig,
+  ProductPageConfig,
   LoginPageConfig,
   RegisterPageConfig,
   ResetPasswordPageConfig,
