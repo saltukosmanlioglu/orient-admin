@@ -107,55 +107,6 @@ function FuseShortcuts(props) {
         props.className
       )}
     >
-      <motion.div
-        variants={container}
-        initial="hidden"
-        animate="show"
-        className={clsx('flex flex-1', props.variant === 'vertical' && 'flex-col')}
-      >
-        {shortcutItems.map(
-          (_item) =>
-            _item && (
-              <Link to={_item.url} key={_item.id} role="button">
-                <Tooltip
-                  title={_item.title}
-                  placement={props.variant === 'horizontal' ? 'bottom' : 'left'}
-                >
-                  <IconButton
-                    className="w-40 h-40 p-0"
-                    component={motion.div}
-                    variants={item}
-                    size="large"
-                  >
-                    {_item.icon ? (
-                      <Icon>{_item.icon}</Icon>
-                    ) : (
-                      <span className="text-20 font-semibold uppercase">{_item.title[0]}</span>
-                    )}
-                  </IconButton>
-                </Tooltip>
-              </Link>
-            )
-        )}
-
-        <Tooltip
-          title="Click to add/remove shortcut"
-          placement={props.variant === 'horizontal' ? 'bottom' : 'left'}
-        >
-          <IconButton
-            component={motion.div}
-            variants={item}
-            className="w-40 h-40 p-0"
-            aria-owns={addMenu ? 'add-menu' : null}
-            aria-haspopup="true"
-            onClick={addMenuClick}
-            size="large"
-          >
-            <Icon sx={{ color: amber[600] }}>star</Icon>
-          </IconButton>
-        </Tooltip>
-      </motion.div>
-
       <Menu
         id="add-menu"
         anchorEl={addMenu}
