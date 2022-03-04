@@ -39,6 +39,13 @@ const navigationConfig = [
         url: 'pages/products',
       },
       {
+        id: 'sliders',
+        title: 'Slider',
+        type: 'item',
+        icon: 'alarm',
+        url: 'pages/sliders',
+      },
+      {
         id: 'authentication',
         title: 'Authentication',
         type: 'collapse',

@@ -25,13 +25,15 @@ import ProfilePageConfig from './profile/ProfilePageConfig';
 import ClassicSearchPageConfig from './search/classic/ClassicSearchPageConfig';
 import ModernSearchPageConfig from './search/modern/ModernSearchPageConfig';
 import CategoryPageConfig from './category/CategoryPageConfig';
-import SubCategoryPageConfig from './sub-category/SubCategoryPageConfig';
 import ProductPageConfig from './product/ProductPageConfig';
+import SliderPageConfig from './slider/SliderPageConfig';
+import SubCategoryPageConfig from './sub-category/SubCategoryPageConfig';
 
 const pagesConfigs = [
   CategoryPageConfig,
   SubCategoryPageConfig,
   ProductPageConfig,
+  SliderPageConfig,
   LoginPageConfig,
   RegisterPageConfig,
   ResetPasswordPageConfig,
