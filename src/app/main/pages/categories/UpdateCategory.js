@@ -38,7 +38,7 @@ const Root = styled('div')(({ theme }) => ({
   },
 }));
 
-function CategoryDetailPage() {
+function UpdateCategory() {
   const [confirmationModal, setConfirmationModal] = useState(false)
   const [formData, setFormData] = useState({
     color: '',
@@ -118,6 +118,7 @@ function CategoryDetailPage() {
               <Grid container spacing={2}>
                 <Grid item xs={6}>
                   <TextField
+                    required
                     fullWidth
                     id="outlined-basic"
                     label="Kategori adı"
@@ -128,6 +129,7 @@ function CategoryDetailPage() {
                 </Grid>
                 <Grid item xs={6}>
                   <TextField
+                    required
                     fullWidth
                     id="outlined-basic"
                     label="Renk kodu"
@@ -182,4 +184,4 @@ function CategoryDetailPage() {
   );
 }
 
-export default CategoryDetailPage;
+export default UpdateCategory;

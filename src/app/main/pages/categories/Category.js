@@ -41,7 +41,7 @@ const Root = styled('div')(({ theme }) => ({
   },
 }));
 
-function CategoryPage() {
+function Category() {
   const [categories, setCategories] = useState()
   const [title, setTitle] = useState('')
 
@@ -152,4 +152,4 @@ function CategoryPage() {
   );
 }
 
-export default CategoryPage;
+export default Category;

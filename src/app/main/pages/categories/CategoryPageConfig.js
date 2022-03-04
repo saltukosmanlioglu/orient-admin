@@ -1,8 +1,8 @@
 import { lazy } from 'react';
 
-const CategoryDetailPage = lazy(() => import('./CategoryDetailPage'));
-const CategoryPage = lazy(() => import('./CategoryPage'));
-const CreateCategoryPage = lazy(() => import('./CreateCategoryPage'));
+const Category = lazy(() => import('./Category'));
+const CreateCategory = lazy(() => import('./CreateCategory'));
+const UpdateCategory = lazy(() => import('./UpdateCategory'));
 
 const CategoryPageConfig = {
   settings: {
@@ -13,15 +13,15 @@ const CategoryPageConfig = {
   routes: [
     {
       path: 'pages/categories',
-      element: <CategoryPage />,
+      element: <Category />,
     },
     {
       path: 'pages/categories/:id',
-      element: <CategoryDetailPage />,
+      element: <UpdateCategory />,
     },
     {
       path: 'pages/categories/create',
-      element: <CreateCategoryPage />,
+      element: <CreateCategory />,
     },
   ],
 };

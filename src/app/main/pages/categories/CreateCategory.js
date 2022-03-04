@@ -36,7 +36,7 @@ const Root = styled('div')(({ theme }) => ({
   },
 }));
 
-function CreateCategoryPage() {
+function CreateCategory() {
   const [categories, setCategories] = useState()
   const [formData, setFormData] = useState({
     color: '',
@@ -135,4 +135,4 @@ function CreateCategoryPage() {
   );
 }
 
-export default CreateCategoryPage;
+export default CreateCategory;
