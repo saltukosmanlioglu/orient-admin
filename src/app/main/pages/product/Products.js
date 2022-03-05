@@ -47,13 +47,11 @@ function Products() {
 
   const [title, setTitle] = useState('')
 
-  const getProducts = () => {
+  useEffect(() => {
     product.list()
-      .then(({ data }) => setProducts(data))
-      .catch(error => console.log(error))
-  }
-
-  useEffect(() => getProducts(), [])
+    .then(({ data }) => setProducts(data))
+    .catch(error => console.log(error))
+  }, [])
 
   const renderHeader = () => {
     return (

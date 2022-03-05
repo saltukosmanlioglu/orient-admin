@@ -43,16 +43,12 @@ const Root = styled('div')(({ theme }) => ({
 
 function Slider() {
   const [sliders, setSliders] = useState()
-
-  const getSliders = useCallback(() => {
+  
+  useEffect(() => {
     slider.list()
       .then(({ data }) => setSliders(data))
       .catch(error => console.log(error))
   }, [])
-
-  useEffect(() => {
-    getSliders()
-  }, [getSliders])
 
   const renderHeader = () => {
     return (

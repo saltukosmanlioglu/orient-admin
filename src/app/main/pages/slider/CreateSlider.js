@@ -55,12 +55,6 @@ function CreateSlider() {
     setFormData({ ...formData, [key]: value })
   }
 
-  const getProducts = () => {
-    product.list()
-      .then(({ data }) => setProducts(data))
-      .then(error => console.log(error))
-  }
-
   const handleSubmit = (e) => {
     e.preventDefault()
     slider.create({ ...formData })
@@ -70,7 +64,11 @@ function CreateSlider() {
       .catch(error => console.log(error))
   }
 
-  useEffect(() => getProducts(), [])
+  useEffect(() => {
+    product.list()
+      .then(({ data }) => setProducts(data))
+      .then(error => console.log(error))
+  }, [])
 
   const renderHeader = () => {
     return (

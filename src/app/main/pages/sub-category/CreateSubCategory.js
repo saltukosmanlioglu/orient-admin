@@ -57,12 +57,6 @@ function CreateSubCategory() {
 
   const navigate = useNavigate()
 
-  const getCategories = useCallback(() => {
-    category.list()
-      .then(({ data }) => setCategories(data))
-      .catch(error => console.log(error))
-  }, [])
-
   const handleFieldChange = (key, value) => {
     setFormData({ ...formData, [key]: value })
   }
@@ -79,7 +73,11 @@ function CreateSubCategory() {
       })
   }
 
-  useEffect(() => getCategories(), [getCategories])
+  useEffect(() => {
+    category.list()
+      .then(({ data }) => setCategories(data))
+      .catch(error => console.log(error))
+  }, [])
 
   const renderHeader = () => {
     return (

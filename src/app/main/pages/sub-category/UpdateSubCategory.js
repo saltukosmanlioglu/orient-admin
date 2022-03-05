@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { useEffect, useState, useCallback } from 'react'
+import { useEffect, useState } from 'react'
 import { styled } from '@mui/material/styles';
 import { useNavigate, useParams } from 'react-router-dom';
 import Box from '@mui/material/Box';
@@ -65,12 +65,6 @@ function UpdateSubCategory() {
     setFormData({ ...formData, [key]: value })
   }
 
-  const getCategories = useCallback(() => {
-    category.list()
-      .then(({ data }) => setCategories(data))
-      .catch(error => console.log(error))
-  }, [])
-
   const handleDelete = () => {
     subCategory.destroy(params.id)
       .then(() => {
@@ -95,9 +89,10 @@ function UpdateSubCategory() {
       })
   }
 
-  useEffect(() => getCategories(), [getCategories])
-
   useEffect(() => {
+    category.list()
+      .then(({ data }) => setCategories(data))
+      .catch(error => console.log(error))
     subCategory.getById(params.id)
       .then(({ data }) => { setFormData(data) })
       .catch(error => console.log(error))

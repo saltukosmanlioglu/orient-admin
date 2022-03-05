@@ -55,21 +55,13 @@ function SubCategories() {
   const [title, setTitle] = useState('')
   const [activeCategory, setActiveCategory] = useState('')
 
-  const getCategories = () => {
+  useEffect(() => {
     category.list()
       .then(({ data }) => setCategories(data))
       .catch(error => console.log(error))
-  }
-
-  const getSubCategories = () => {
     subCategory.list({ title: title })
       .then(({ data }) => setSubCategories(data))
       .catch(error => console.log(error))
-  }
-
-  useEffect(() => {
-    getCategories()
-    getSubCategories()
   }, [])
 
   const renderHeader = () => {

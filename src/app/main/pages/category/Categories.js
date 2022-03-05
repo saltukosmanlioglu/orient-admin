@@ -46,13 +46,11 @@ function Categories() {
   const [categories, setCategories] = useState()
   const [title, setTitle] = useState('')
 
-  const getCategories = () => {
+  useEffect(() => {
     category.list()
       .then(({ data }) => setCategories(data))
       .catch(error => console.log(error))
-  }
-
-  useEffect(() => getCategories(), [])
+  }, [])
 
   const renderHeader = () => {
     return (
