@@ -1,15 +1,18 @@
 import * as React from 'react';
 import { useState } from 'react'
-import Typography from '@mui/material/Typography';
+import { useNavigate } from 'react-router-dom';
+import { styled } from '@mui/material/styles';
+import Box from '@mui/material/Box';
 import Breadcrumbs from '@mui/material/Breadcrumbs';
 import Button from '@mui/material/Button';
-import Stack from '@mui/material/Stack';
 import Grid from '@mui/material/Grid';
-import Box from '@mui/material/Box';
-import category from 'app/main/services/controller/category';
+import MuiAlert from '@mui/material/Alert';
+import Snackbar from '@mui/material/Snackbar';
+import Stack from '@mui/material/Stack';
 import TextField from '@mui/material/TextField';
-import { styled } from '@mui/material/styles';
-import { useNavigate } from 'react-router-dom';
+import Typography from '@mui/material/Typography';
+
+import category from 'app/main/services/controller/category';
 
 const Root = styled('div')(({ theme }) => ({
   '& .FaqPage-header': {
@@ -37,16 +40,27 @@ const Root = styled('div')(({ theme }) => ({
 }));
 
 function CreateCategory() {
-  const [categories, setCategories] = useState()
   const [formData, setFormData] = useState({
     color: '',
     title: '',
   })
 
+  const [error, setError] = useState(false)
+
   const navigate = useNavigate()
 
   const handleFieldChange = (key, value) => {
     setFormData({ ...formData, [key]: value })
+  }
+
+  const handleSubmit = (e) => {
+    e.preventDefault()
+    category.create({ ...formData })
+      .then(() => navigate('/pages/categories'))
+      .catch(error => {
+        console.log(error)
+        setError(true)
+      })
   }
 
   const renderHeader = () => {
@@ -72,15 +86,6 @@ function CreateCategory() {
         </Breadcrumbs>
       </div>
     )
-  }
-
-  const handleSubmit = (e) => {
-    e.preventDefault()
-    category.create({ ...formData })
-      .then(() => {
-        navigate('/pages/categories')
-      })
-      .catch(error => console.log(error))
   }
 
   const renderForm = () => {
@@ -122,16 +127,27 @@ function CreateCategory() {
     )
   }
 
+  const Alert = React.forwardRef(function Alert(props, ref) {
+    return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
+  });
+
   return (
-    <Root className="w-full flex flex-col flex-auto">
-      <div className="pl-60 pr-60 pt-20 pb-20">
-        {renderBreadcrumb()}
-        {renderHeader()}
-        <div className='mt-20'>
-          {renderForm()}
+    <React.Fragment>
+      <Root className="w-full flex flex-col flex-auto">
+        <div className="pl-60 pr-60 pt-20 pb-20">
+          {renderBreadcrumb()}
+          {renderHeader()}
+          <div className='mt-20'>
+            {renderForm()}
+          </div>
         </div>
-      </div>
-    </Root>
+      </Root>
+      <Snackbar style={{ width: '25%', margin: '0 30px 30px auto', position: 'static', }} open={error} autoHideDuration={3000} onClose={() => setError(false)}>
+        <Alert onClose={() => setError(false)} severity="error" sx={{ width: '100%' }}>
+          İşlem gerçekleşmedi
+        </Alert>
+      </Snackbar>
+    </React.Fragment>
   );
 }
 

@@ -1,26 +1,27 @@
 import * as React from 'react';
-import { useEffect, useState, useCallback } from 'react'
+import { useEffect, useState } from 'react'
+import { styled } from '@mui/material/styles';
 import Box from '@mui/material/Box';
-import TextField from '@mui/material/TextField';
-import Typography from '@mui/material/Typography';
-import FormControl from '@mui/material/FormControl';
 import Breadcrumbs from '@mui/material/Breadcrumbs';
-import Grid from '@mui/material/Grid';
 import Button from '@mui/material/Button';
+import ButtonGroup from '@mui/material/ButtonGroup';
+import FormControl from '@mui/material/FormControl';
+import Grid from '@mui/material/Grid';
 import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
+import Paper from '@mui/material/Paper';
 import Select from '@mui/material/Select';
-import ButtonGroup from '@mui/material/ButtonGroup';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
 import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
-import Paper from '@mui/material/Paper';
-import { styled } from '@mui/material/styles';
-import subCategory from 'app/main/services/controller/sub-category';
+import TextField from '@mui/material/TextField';
+import Typography from '@mui/material/Typography';
+
 import category from 'app/main/services/controller/category';
+import subCategory from 'app/main/services/controller/sub-category';
 
 const Root = styled('div')(({ theme }) => ({
   '& .FaqPage-header': {
@@ -47,28 +48,29 @@ const Root = styled('div')(({ theme }) => ({
   },
 }));
 
-function SubCategory() {
+function SubCategories() {
   const [subCategories, setSubCategories] = useState()
   const [categories, setCategories] = useState()
 
   const [title, setTitle] = useState('')
   const [activeCategory, setActiveCategory] = useState('')
 
-  const getCategories = useCallback(() => {
+  const getCategories = () => {
     category.list()
       .then(({ data }) => setCategories(data))
       .catch(error => console.log(error))
-  }, [])
+  }
 
-  const getSubCategories = useCallback(() => {
+  const getSubCategories = () => {
     subCategory.list({ title: title })
       .then(({ data }) => setSubCategories(data))
       .catch(error => console.log(error))
+  }
+
+  useEffect(() => {
+    getCategories()
+    getSubCategories()
   }, [])
-
-  useEffect(() => { getCategories() }, [getCategories])
-
-  useEffect(() => { getSubCategories() }, [getSubCategories])
 
   const renderHeader = () => {
     return (
@@ -194,4 +196,4 @@ function SubCategory() {
   );
 }
 
-export default SubCategory;
+export default SubCategories;

@@ -1,19 +1,20 @@
 import * as React from 'react';
-import { useEffect, useState, useCallback } from 'react'
+import { useEffect, useState } from 'react'
+import { styled } from '@mui/material/styles';
 import Box from '@mui/material/Box';
-import TextField from '@mui/material/TextField';
-import Typography from '@mui/material/Typography';
 import Breadcrumbs from '@mui/material/Breadcrumbs';
 import Button from '@mui/material/Button';
 import ButtonGroup from '@mui/material/ButtonGroup';
+import Paper from '@mui/material/Paper';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
 import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
-import Paper from '@mui/material/Paper';
-import { styled } from '@mui/material/styles';
+import TextField from '@mui/material/TextField';
+import Typography from '@mui/material/Typography';
+
 import product from 'app/main/services/controller/product';
 
 const Root = styled('div')(({ theme }) => ({
@@ -41,19 +42,18 @@ const Root = styled('div')(({ theme }) => ({
   },
 }));
 
-function Product() {
+function Products() {
   const [products, setProducts] = useState()
+
   const [title, setTitle] = useState('')
 
-  const getProducts = useCallback(() => {
+  const getProducts = () => {
     product.list()
       .then(({ data }) => setProducts(data))
       .catch(error => console.log(error))
-  }, [])
+  }
 
-  useEffect(() => {
-    getProducts()
-  }, [getProducts])
+  useEffect(() => getProducts(), [])
 
   const renderHeader = () => {
     return (
@@ -160,4 +160,4 @@ function Product() {
   );
 }
 
-export default Product;
+export default Products;

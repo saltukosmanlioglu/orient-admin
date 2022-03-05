@@ -1,22 +1,23 @@
 import * as React from 'react';
 import { useEffect, useState } from 'react'
+import { useNavigate, useParams } from 'react-router-dom';
+import { styled } from '@mui/material/styles';
+import Box from '@mui/material/Box';
+import Breadcrumbs from '@mui/material/Breadcrumbs';
 import Button from '@mui/material/Button';
 import ButtonGroup from '@mui/material/ButtonGroup';
-import TextField from '@mui/material/TextField';
-import Stack from '@mui/material/Stack';
-import Typography from '@mui/material/Typography';
-import Breadcrumbs from '@mui/material/Breadcrumbs';
-import MenuItem from '@mui/material/MenuItem';
-import InputLabel from '@mui/material/InputLabel';
-import Select from '@mui/material/Select';
 import FormControl from '@mui/material/FormControl';
-import Modal from '@mui/material/Modal';
-import Box from '@mui/material/Box';
-import { styled } from '@mui/material/styles';
-import { useNavigate, useParams } from 'react-router-dom';
 import Grid from '@mui/material/Grid';
-import product from 'app/main/services/controller/product';
+import InputLabel from '@mui/material/InputLabel';
+import MenuItem from '@mui/material/MenuItem';
+import Modal from '@mui/material/Modal';
+import Select from '@mui/material/Select';
+import Stack from '@mui/material/Stack';
+import TextField from '@mui/material/TextField';
+import Typography from '@mui/material/Typography';
+
 import category from 'app/main/services/controller/category';
+import product from 'app/main/services/controller/product';
 import subCategory from 'app/main/services/controller/sub-category';
 
 const Root = styled('div')(({ theme }) => ({
@@ -54,9 +55,10 @@ function UpdateProduct() {
     subCategoryId: 0,
     title: '',
   })
+
   const [categories, setCategories] = useState()
   const [subCategories, setSubCategories] = useState()
-  
+
   const [confirmationModal, setConfirmationModal] = useState(false)
 
   const params = useParams()
@@ -88,15 +90,11 @@ function UpdateProduct() {
     category.list()
       .then(({ data }) => setCategories(data))
       .catch(error => console.log(error))
-  }, [])
 
-  useEffect(() => {
     subCategory.list()
       .then(({ data }) => setSubCategories(data))
       .catch(error => console.log(error))
-  }, [])
 
-  useEffect(() => {
     product.getById(params.id)
       .then(({ data }) => setFormData(data))
       .catch(error => console.log(error))
@@ -130,116 +128,122 @@ function UpdateProduct() {
     )
   }
 
+  const renderForm = () => {
+    return (
+      <div className="mt-20">
+        <form onSubmit={handleSubmit}>
+          <Box sx={{ flexGrow: 1 }}>
+            <Grid container spacing={2}>
+              <Grid item xs={6}>
+                <TextField
+                  required
+                  fullWidth
+                  id="outlined-basic"
+                  label="Ürün adı"
+                  variant="outlined"
+                  onChange={(e) => handleFieldChange('title', e.currentTarget.value)}
+                  value={formData.title}
+                />
+              </Grid>
+              <Grid item xs={6}>
+                <TextField
+                  required
+                  fullWidth
+                  id="outlined-basic"
+                  label="Fiyat"
+                  variant="outlined"
+                  onChange={(e) => handleFieldChange('price', e.currentTarget.value)}
+                  value={formData.price}
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <TextField
+                  required
+                  fullWidth
+                  id="outlined-basic"
+                  label="Açıklama"
+                  variant="outlined"
+                  onChange={(e) => handleFieldChange('description', e.currentTarget.value)}
+                  value={formData.description}
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <TextField
+                  fullWidth
+                  id="outlined-basic"
+                  label="Alerjenler"
+                  variant="outlined"
+                  onChange={(e) => handleFieldChange('allergens', e.currentTarget.value)}
+                  value={formData.allergens}
+                />
+              </Grid>
+              <Grid item xs={6}>
+                <FormControl fullWidth>
+                  <InputLabel id="demo-simple-select-helper-label">Kategori</InputLabel>
+                  <Select
+                    required
+                    fullWidth
+                    labelId="demo-simple-select-helper-label"
+                    id="demo-simple-select-helper"
+                    value={formData.categoryId}
+                    label="Kategori"
+                    onChange={(e) => handleFieldChange('categoryId', e.target.value)}
+                  >
+                    {categories && categories.map((category) => (
+                      <MenuItem
+                        key={category.id}
+                        value={category.id}
+                        style={{ color: category.color }}
+                      >
+                        {category.title}
+                      </MenuItem>
+                    ))}
+                  </Select>
+                </FormControl>
+              </Grid>
+              <Grid item xs={6}>
+                <FormControl fullWidth>
+                  <InputLabel id="demo-simple-select-helper-label">Alt kategori</InputLabel>
+                  <Select
+                    required
+                    fullWidth
+                    labelId="demo-simple-select-helper-label"
+                    id="demo-simple-select-helper"
+                    value={formData.subCategoryId}
+                    label="Alt kategori"
+                    onChange={(e) => handleFieldChange('subCategoryId', e.target.value)}
+                  >
+                    {subCategories && subCategories.map((subCategory) => (
+                      <MenuItem
+                        key={subCategory.id}
+                        value={subCategory.id}
+                        style={{ color: subCategory.color }}
+                      >
+                        {subCategory.title}
+                      </MenuItem>
+                    ))}
+                  </Select>
+                </FormControl>
+              </Grid>
+            </Grid>
+          </Box>
+          <div className='mt-20' style={{ width: '100%', display: 'flex', alignItems: 'center', justifyContent: 'flex-end' }}>
+            <Stack spacing={2} direction="row">
+              <Button type="submit" color="info" variant="contained">Güncelle</Button>
+              <Button href="/pages/products" color="inherit">İptal</Button>
+            </Stack>
+          </div>
+        </form>
+      </div>
+    )
+  }
+
   return (
     <Root className="w-full flex flex-col flex-auto">
       <div className="pl-60 pr-60 pt-20 pb-20">
         {renderBreadcrumb()}
         {renderHeader()}
-        <div className="mt-20">
-          <form onSubmit={handleSubmit}>
-            <Box sx={{ flexGrow: 1 }}>
-              <Grid container spacing={2}>
-                <Grid item xs={6}>
-                  <TextField
-                    required
-                    fullWidth
-                    id="outlined-basic"
-                    label="Ürün adı"
-                    variant="outlined"
-                    onChange={(e) => handleFieldChange('title', e.currentTarget.value)}
-                    value={formData.title}
-                  />
-                </Grid>
-                <Grid item xs={6}>
-                  <TextField
-                    required
-                    fullWidth
-                    id="outlined-basic"
-                    label="Fiyat"
-                    variant="outlined"
-                    onChange={(e) => handleFieldChange('price', e.currentTarget.value)}
-                    value={formData.price}
-                  />
-                </Grid>
-                <Grid item xs={12}>
-                  <TextField
-                    required
-                    fullWidth
-                    id="outlined-basic"
-                    label="Açıklama"
-                    variant="outlined"
-                    onChange={(e) => handleFieldChange('description', e.currentTarget.value)}
-                    value={formData.description}
-                  />
-                </Grid>
-                <Grid item xs={12}>
-                  <TextField
-                    fullWidth
-                    id="outlined-basic"
-                    label="Alerjenler"
-                    variant="outlined"
-                    onChange={(e) => handleFieldChange('allergens', e.currentTarget.value)}
-                    value={formData.allergens}
-                  />
-                </Grid>
-                <Grid item xs={6}>
-                  <FormControl fullWidth>
-                    <InputLabel id="demo-simple-select-helper-label">Kategori</InputLabel>
-                    <Select
-                      required
-                      fullWidth
-                      labelId="demo-simple-select-helper-label"
-                      id="demo-simple-select-helper"
-                      value={formData.categoryId}
-                      label="Kategori"
-                      onChange={(e) => handleFieldChange('categoryId', e.target.value)}
-                    >
-                      {categories && categories.map((category) => (
-                        <MenuItem
-                          key={category.id}
-                          value={category.id}
-                          style={{ color: category.color }}
-                        >
-                          {category.title}
-                        </MenuItem>
-                      ))}
-                    </Select>
-                  </FormControl>
-                </Grid>
-                <Grid item xs={6}>
-                  <FormControl fullWidth>
-                    <InputLabel id="demo-simple-select-helper-label">Alt kategori</InputLabel>
-                    <Select
-                      required
-                      fullWidth
-                      labelId="demo-simple-select-helper-label"
-                      id="demo-simple-select-helper"
-                      value={formData.subCategoryId}
-                      label="Alt kategori"
-                      onChange={(e) => handleFieldChange('subCategoryId', e.target.value)}
-                    >
-                      {subCategories && subCategories.map((subCategory) => (
-                        <MenuItem
-                          key={subCategory.id}
-                          value={subCategory.id}
-                          style={{ color: subCategory.color }}
-                        >
-                          {subCategory.title}
-                        </MenuItem>
-                      ))}
-                    </Select>
-                  </FormControl>
-                </Grid>
-              </Grid>
-            </Box>
-            <div className='mt-20' style={{ width: '100%', display: 'flex', alignItems: 'center', justifyContent: 'flex-end' }}>
-              <Stack spacing={2} direction="row">
-                <Button type="submit" color="info" variant="contained">Güncelle</Button>
-                <Button href="/pages/products" color="inherit">İptal</Button>
-              </Stack>
-            </div>
-          </form>
-        </div>
+        {renderForm()}
       </div>
       <Modal
         open={confirmationModal}

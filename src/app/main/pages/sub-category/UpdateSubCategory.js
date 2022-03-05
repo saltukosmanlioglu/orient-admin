@@ -1,22 +1,25 @@
 import * as React from 'react';
 import { useEffect, useState, useCallback } from 'react'
-import Button from '@mui/material/Button';
-import ButtonGroup from '@mui/material/ButtonGroup';
-import TextField from '@mui/material/TextField';
-import InputLabel from '@mui/material/InputLabel';
-import Select from '@mui/material/Select';
-import FormControl from '@mui/material/FormControl';
-import MenuItem from '@mui/material/MenuItem';
-import Stack from '@mui/material/Stack';
-import Typography from '@mui/material/Typography';
-import Breadcrumbs from '@mui/material/Breadcrumbs';
-import Modal from '@mui/material/Modal';
-import Box from '@mui/material/Box';
 import { styled } from '@mui/material/styles';
 import { useNavigate, useParams } from 'react-router-dom';
+import Box from '@mui/material/Box';
+import Breadcrumbs from '@mui/material/Breadcrumbs';
+import Button from '@mui/material/Button';
+import ButtonGroup from '@mui/material/ButtonGroup';
+import FormControl from '@mui/material/FormControl';
 import Grid from '@mui/material/Grid';
-import subCategory from 'app/main/services/controller/sub-category';
+import InputLabel from '@mui/material/InputLabel';
+import MenuItem from '@mui/material/MenuItem';
+import Modal from '@mui/material/Modal';
+import MuiAlert from '@mui/material/Alert';
+import Select from '@mui/material/Select';
+import Snackbar from '@mui/material/Snackbar';
+import Stack from '@mui/material/Stack';
+import TextField from '@mui/material/TextField';
+import Typography from '@mui/material/Typography';
+
 import category from 'app/main/services/controller/category';
+import subCategory from 'app/main/services/controller/sub-category';
 
 const Root = styled('div')(({ theme }) => ({
   '& .FaqPage-header': {
@@ -49,8 +52,11 @@ function UpdateSubCategory() {
     color: '',
     title: '',
   })
+
   const [categories, setCategories] = useState()
+
   const [confirmationModal, setConfirmationModal] = useState(false)
+  const [error, setError] = useState(false)
 
   const params = useParams()
   const navigate = useNavigate()
@@ -71,7 +77,10 @@ function UpdateSubCategory() {
         setConfirmationModal(false)
         navigate('/pages/sub-categories')
       })
-      .catch(() => setConfirmationModal(false))
+      .catch(() => {
+        setError(true)
+        setConfirmationModal(false)
+      })
   }
 
   const handleSubmit = (e) => {
@@ -80,7 +89,10 @@ function UpdateSubCategory() {
       .then(() => {
         navigate('/pages/sub-categories')
       })
-      .catch(error => console.log(error))
+      .catch(error => {
+        setError(true)
+        console.log(error)
+      })
   }
 
   useEffect(() => getCategories(), [getCategories])
@@ -119,104 +131,121 @@ function UpdateSubCategory() {
     )
   }
 
-  return (
-    <Root className="w-full flex flex-col flex-auto">
-      <div className="pl-60 pr-60 pt-20 pb-20">
-        {renderBreadcrumb()}
-        {renderHeader()}
-        <div className="mt-20">
-          <form onSubmit={handleSubmit}>
-            <Box sx={{ flexGrow: 1 }}>
-              <Grid container spacing={2}>
-                <Grid item xs={6}>
-                  <TextField
-                    required
-                    fullWidth
-                    id="outlined-basic"
-                    label="Alt kategori adı"
-                    variant="outlined"
-                    onChange={(e) => handleFieldChange('title', e.currentTarget.value)}
-                    value={formData.title}
-                  />
-                </Grid>
-                <Grid item xs={6}>
-                  <TextField
-                    required
-                    fullWidth
-                    id="outlined-basic"
-                    label="Renk kodu"
-                    variant="outlined"
-                    onChange={(e) => handleFieldChange('color', e.currentTarget.value)}
-                    value={formData.color}
-                  />
-                </Grid>
-                <Grid item xs={6}>
-                  <FormControl fullWidth>
-                    <InputLabel id="demo-simple-select-helper-label">Kategori</InputLabel>
-                    <Select
-                      required
-                      fullWidth
-                      labelId="demo-simple-select-helper-label"
-                      id="demo-simple-select-helper"
-                      value={formData.categoryId}
-                      label="Kategori"
-                      onChange={(e) => handleFieldChange('categoryId', e.target.value)}
-                    >
-                      {categories && categories.map((category) => (
-                        <MenuItem
-                          key={category.id}
-                          value={category.id}
-                          style={{ color: category.color }}
-                        >
-                          {category.title}
-                        </MenuItem>
-                      ))}
-                    </Select>
-                  </FormControl>
-                </Grid>
+  const renderForm = () => {
+    return (
+      <div className="mt-20">
+        <form onSubmit={handleSubmit}>
+          <Box sx={{ flexGrow: 1 }}>
+            <Grid container spacing={2}>
+              <Grid item xs={6}>
+                <TextField
+                  required
+                  fullWidth
+                  id="outlined-basic"
+                  label="Alt kategori adı"
+                  variant="outlined"
+                  onChange={(e) => handleFieldChange('title', e.currentTarget.value)}
+                  value={formData.title}
+                />
               </Grid>
-            </Box>
-            <div className='mt-20' style={{ width: '100%', display: 'flex', alignItems: 'center', justifyContent: 'flex-end' }}>
-              <Stack spacing={2} direction="row">
-                <Button type="submit" color="info" variant="contained">Güncelle</Button>
-                <Button href="/pages/sub-categories" color="inherit">İptal</Button>
-              </Stack>
-            </div>
-          </form>
-        </div>
-      </div>
-      <Modal
-        open={confirmationModal}
-        onClose={() => setConfirmationModal(false)}
-        aria-labelledby="modal-modal-title"
-        aria-describedby="modal-modal-description"
-      >
-        <Box sx={{
-          position: 'absolute',
-          top: '50%',
-          left: '50%',
-          transform: 'translate(-50%, -50%)',
-          width: 400,
-          bgcolor: 'background.paper',
-          border: '2px solid #000',
-          boxShadow: 24,
-          p: 4,
-        }}>
-          <Typography id="modal-modal-title" variant="h6" component="h2">
-            Alt kategori sil
-          </Typography>
-          <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-            Geçerli alt kategoriyi silmek istediğinizden emin misiniz ?
-          </Typography>
-          <div className="mt-16" style={{ width: '100%', display: 'flex', alignItems: 'center', justifyContent: 'flex-end' }}>
-            <ButtonGroup>
-              <Button color="error" variant="contained" onClick={handleDelete}>Sil</Button>
-              <Button color="inherit" variant="contained" onClick={() => setConfirmationModal(false)}>İptal</Button>
-            </ButtonGroup>
+              <Grid item xs={6}>
+                <TextField
+                  required
+                  fullWidth
+                  id="outlined-basic"
+                  label="Renk kodu"
+                  variant="outlined"
+                  onChange={(e) => handleFieldChange('color', e.currentTarget.value)}
+                  value={formData.color}
+                />
+              </Grid>
+              <Grid item xs={6}>
+                <FormControl fullWidth>
+                  <InputLabel id="demo-simple-select-helper-label">Kategori</InputLabel>
+                  <Select
+                    required
+                    fullWidth
+                    labelId="demo-simple-select-helper-label"
+                    id="demo-simple-select-helper"
+                    value={formData.categoryId}
+                    label="Kategori"
+                    onChange={(e) => handleFieldChange('categoryId', e.target.value)}
+                  >
+                    {categories && categories.map((category) => (
+                      <MenuItem
+                        key={category.id}
+                        value={category.id}
+                        style={{ color: category.color }}
+                      >
+                        {category.title}
+                      </MenuItem>
+                    ))}
+                  </Select>
+                </FormControl>
+              </Grid>
+            </Grid>
+          </Box>
+          <div className='mt-20' style={{ width: '100%', display: 'flex', alignItems: 'center', justifyContent: 'flex-end' }}>
+            <Stack spacing={2} direction="row">
+              <Button type="submit" color="info" variant="contained">Güncelle</Button>
+              <Button href="/pages/sub-categories" color="inherit">İptal</Button>
+            </Stack>
           </div>
-        </Box>
-      </Modal>
-    </Root>
+        </form>
+      </div>
+    )
+  }
+
+  const Alert = React.forwardRef(function Alert(props, ref) {
+    return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
+  });
+
+  return (
+    <React.Fragment>
+      <Root className="w-full flex flex-col flex-auto">
+        <div className="pl-60 pr-60 pt-20 pb-20">
+          {renderBreadcrumb()}
+          {renderHeader()}
+          {renderForm()}
+        </div>
+        <Modal
+          open={confirmationModal}
+          onClose={() => setConfirmationModal(false)}
+          aria-labelledby="modal-modal-title"
+          aria-describedby="modal-modal-description"
+        >
+          <Box sx={{
+            position: 'absolute',
+            top: '50%',
+            left: '50%',
+            transform: 'translate(-50%, -50%)',
+            width: 400,
+            bgcolor: 'background.paper',
+            border: '2px solid #000',
+            boxShadow: 24,
+            p: 4,
+          }}>
+            <Typography id="modal-modal-title" variant="h6" component="h2">
+              Alt kategori sil
+            </Typography>
+            <Typography id="modal-modal-description" sx={{ mt: 2 }}>
+              Geçerli alt kategoriyi silmek istediğinizden emin misiniz ?
+            </Typography>
+            <div className="mt-16" style={{ width: '100%', display: 'flex', alignItems: 'center', justifyContent: 'flex-end' }}>
+              <ButtonGroup>
+                <Button color="error" variant="contained" onClick={handleDelete}>Sil</Button>
+                <Button color="inherit" variant="contained" onClick={() => setConfirmationModal(false)}>İptal</Button>
+              </ButtonGroup>
+            </div>
+          </Box>
+        </Modal>
+      </Root>
+      <Snackbar style={{ width: '25%', margin: '0 30px 30px auto', position: 'static', }} open={error} autoHideDuration={3000} onClose={() => setError(false)}>
+        <Alert onClose={() => setError(false)} severity="error" sx={{ width: '100%' }}>
+          İşlem gerçekleşmedi
+        </Alert>
+      </Snackbar>
+    </React.Fragment>
   );
 }
 

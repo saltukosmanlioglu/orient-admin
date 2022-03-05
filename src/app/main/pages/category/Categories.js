@@ -1,19 +1,20 @@
 import * as React from 'react';
-import { useEffect, useState, useCallback } from 'react'
+import { useEffect, useState } from 'react'
+import { styled } from '@mui/material/styles';
 import Box from '@mui/material/Box';
-import TextField from '@mui/material/TextField';
-import Typography from '@mui/material/Typography';
 import Breadcrumbs from '@mui/material/Breadcrumbs';
 import Button from '@mui/material/Button';
 import ButtonGroup from '@mui/material/ButtonGroup';
+import Paper from '@mui/material/Paper';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
 import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
-import Paper from '@mui/material/Paper';
-import { styled } from '@mui/material/styles';
+import TextField from '@mui/material/TextField';
+import Typography from '@mui/material/Typography';
+
 import category from 'app/main/services/controller/category';
 
 const Root = styled('div')(({ theme }) => ({
@@ -41,19 +42,17 @@ const Root = styled('div')(({ theme }) => ({
   },
 }));
 
-function Category() {
+function Categories() {
   const [categories, setCategories] = useState()
   const [title, setTitle] = useState('')
 
-  const getCategories = useCallback(() => {
-    category.list({ title: title })
+  const getCategories = () => {
+    category.list()
       .then(({ data }) => setCategories(data))
       .catch(error => console.log(error))
-  }, [])
+  }
 
-  useEffect(() => {
-    getCategories()
-  }, [getCategories])
+  useEffect(() => getCategories(), [])
 
   const renderHeader = () => {
     return (
@@ -62,7 +61,7 @@ function Category() {
           <Typography className="text-40 my-16 font-700" component="h1">
             Kategoriler
           </Typography>
-          <Button color="info" variant="contained" href='/pages/categories/create'>Kategori oluştur</Button>
+          <Button color="info" variant="contained" href='/pages/category/create'>Kategori oluştur</Button>
         </div>
         <Typography className="description">
           Tüm kategorileri listeleyebilir, yeni oluşturabilir veya varolanları düzenleyebilirsiniz.
@@ -101,7 +100,7 @@ function Category() {
                 <TableCell>{category.color}</TableCell>
                 <TableCell>{new Date(category.createdAt).toLocaleString()}</TableCell>
                 <TableCell>
-                  <Button href={`/pages/categories/${category.id}`} color="primary">İncele</Button>
+                  <Button href={`/pages/category/${category.id}`} color="primary">İncele</Button>
                 </TableCell>
               </TableRow>
             ))}
@@ -152,4 +151,4 @@ function Category() {
   );
 }
 
-export default Category;
+export default Categories;

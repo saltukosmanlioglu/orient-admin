@@ -1,6 +1,6 @@
 import { lazy } from 'react';
 
-const Product = lazy(() => import('./Product'));
+const Products = lazy(() => import('./Products'));
 const CreateProduct = lazy(() => import('./CreateProduct'));
 const UpdateProduct = lazy(() => import('./UpdateProduct'));
 
@@ -13,7 +13,7 @@ const ProductPageConfig = {
   routes: [
     {
       path: 'pages/products',
-      element: <Product />,
+      element: <Products />,
     },
     {
       path: 'pages/product/:id',

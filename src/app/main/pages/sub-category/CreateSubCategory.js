@@ -1,20 +1,23 @@
 import * as React from 'react';
 import { useState, useCallback, useEffect } from 'react'
-import MenuItem from '@mui/material/MenuItem';
-import InputLabel from '@mui/material/InputLabel';
-import Typography from '@mui/material/Typography';
-import Select from '@mui/material/Select';
+import { useNavigate } from 'react-router-dom';
+import { styled } from '@mui/material/styles';
+import Box from '@mui/material/Box';
 import Breadcrumbs from '@mui/material/Breadcrumbs';
 import Button from '@mui/material/Button';
-import Stack from '@mui/material/Stack';
-import Grid from '@mui/material/Grid';
-import Box from '@mui/material/Box';
 import FormControl from '@mui/material/FormControl';
+import Grid from '@mui/material/Grid';
+import InputLabel from '@mui/material/InputLabel';
+import MenuItem from '@mui/material/MenuItem';
+import MuiAlert from '@mui/material/Alert';
+import Select from '@mui/material/Select';
+import Snackbar from '@mui/material/Snackbar';
+import Stack from '@mui/material/Stack';
 import subCategory from 'app/main/services/controller/sub-category';
-import category from 'app/main/services/controller/category';
 import TextField from '@mui/material/TextField';
-import { styled } from '@mui/material/styles';
-import { useNavigate } from 'react-router-dom';
+import Typography from '@mui/material/Typography';
+
+import category from 'app/main/services/controller/category';
 
 const Root = styled('div')(({ theme }) => ({
   '& .FaqPage-header': {
@@ -47,7 +50,10 @@ function CreateSubCategory() {
     title: '',
     categoryId: 0,
   })
+
   const [categories, setCategories] = useState()
+
+  const [error, setError] = useState(false)
 
   const navigate = useNavigate()
 
@@ -57,11 +63,23 @@ function CreateSubCategory() {
       .catch(error => console.log(error))
   }, [])
 
-  useEffect(() => getCategories(), [getCategories])
-
   const handleFieldChange = (key, value) => {
     setFormData({ ...formData, [key]: value })
   }
+
+  const handleSubmit = (e) => {
+    e.preventDefault()
+    subCategory.create({ ...formData })
+      .then(() => {
+        navigate('/pages/sub-categories')
+      })
+      .catch(error => {
+        setError(true)
+        console.log(error)
+      })
+  }
+
+  useEffect(() => getCategories(), [getCategories])
 
   const renderHeader = () => {
     return (
@@ -88,15 +106,6 @@ function CreateSubCategory() {
     )
   }
 
-  const handleSubmit = (e) => {
-    e.preventDefault()
-    subCategory.create({ ...formData })
-      .then(() => {
-        navigate('/pages/sub-categories')
-      })
-      .catch(error => console.log(error))
-  }
-
   const renderForm = () => {
     return (
       <form onSubmit={handleSubmit}>
@@ -115,7 +124,6 @@ function CreateSubCategory() {
             </Grid>
             <Grid item xs={6}>
               <TextField
-                required
                 fullWidth
                 id="outlined-basic"
                 label="Renk kodu"
@@ -160,16 +168,27 @@ function CreateSubCategory() {
     )
   }
 
+  const Alert = React.forwardRef(function Alert(props, ref) {
+    return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
+  });
+
   return (
-    <Root className="w-full flex flex-col flex-auto">
-      <div className="pl-60 pr-60 pt-20 pb-20">
-        {renderBreadcrumb()}
-        {renderHeader()}
-        <div className='mt-20'>
-          {renderForm()}
+    <React.Fragment>
+      <Root className="w-full flex flex-col flex-auto">
+        <div className="pl-60 pr-60 pt-20 pb-20">
+          {renderBreadcrumb()}
+          {renderHeader()}
+          <div className='mt-20'>
+            {renderForm()}
+          </div>
         </div>
-      </div>
-    </Root>
+      </Root>
+      <Snackbar style={{ width: '25%', margin: '0 30px 30px auto', position: 'static', }} open={error} autoHideDuration={3000} onClose={() => setError(false)}>
+        <Alert onClose={() => setError(false)} severity="error" sx={{ width: '100%' }}>
+          İşlem gerçekleşmedi
+        </Alert>
+      </Snackbar>
+    </React.Fragment>
   );
 }
 

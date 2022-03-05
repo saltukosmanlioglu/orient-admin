@@ -1,7 +1,7 @@
 import { lazy } from 'react';
 
-const SubCategory = lazy(() => import('./SubCategory'));
 const CreateSubCategory = lazy(() => import('./CreateSubCategory'));
+const SubCategories = lazy(() => import('./SubCategories'));
 const UpdateSubCategory = lazy(() => import('./UpdateSubCategory'));
 
 const SubCategoryPageConfig = {
@@ -13,7 +13,7 @@ const SubCategoryPageConfig = {
   routes: [
     {
       path: 'pages/sub-categories',
-      element: <SubCategory />,
+      element: <SubCategories />,
     },
     {
       path: 'pages/sub-category/:id',
