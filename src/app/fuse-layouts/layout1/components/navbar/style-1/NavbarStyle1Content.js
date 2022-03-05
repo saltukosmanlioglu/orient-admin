@@ -44,7 +44,10 @@ function NavbarStyle1Content(props) {
         className="flex flex-row items-center shrink h-48 md:h-64 min-h-48 md:min-h-64 px-12 shadow-0"
       >
         <div className="flex flex-1 mx-4">
-          <h3 style={{ fontWeight: 'bold' }}>ORIENT BY GK</h3>
+          <div style={{ display: 'flex', alignItems: 'center', margin: 12, justifyContent: 'center' }}>
+            <img src="/logo.png" alt="Orient Logo" width={35} className="mr-12" />
+            <h3 style={{ fontWeight: 'bold' }}>ORIENT BY GK</h3>
+          </div>
         </div>
 
         <NavbarToggleButton className="w-40 h-40 p-0" />

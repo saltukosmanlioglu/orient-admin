@@ -18,6 +18,7 @@ import Typography from '@mui/material/Typography';
 
 import category from 'app/main/services/controller/category';
 import subCategory from 'app/main/services/controller/sub-category';
+import file from 'app/main/services/controller/file';
 
 const Root = styled('div')(({ theme }) => ({
   '& .FaqPage-header': {
