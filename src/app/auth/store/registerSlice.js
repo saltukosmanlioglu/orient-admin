@@ -5,16 +5,17 @@ import jwtService from 'app/services/jwtService';
 import { createUserSettingsFirebase, setUserData } from './userSlice';
 
 export const submitRegister =
-  ({ displayName, password, email }) =>
+  ({ username, password, passwordConfirm }) =>
   async (dispatch) => {
     return jwtService
       .createUser({
-        displayName,
+        username,
         password,
-        email,
+        passwordConfirm,
       })
       .then((user) => {
         dispatch(setUserData(user));
+        window.open('/', '_self')
         return dispatch(registerSuccess());
       })
       .catch((errors) => {
@@ -50,8 +51,6 @@ export const registerWithFirebase = (model) => async (dispatch) => {
         'auth/user-disabled',
       ];
 
-      const emailErrorCodes = ['auth/email-already-in-use', 'auth/invalid-email'];
-
       const passwordErrorCodes = ['auth/weak-password', 'auth/wrong-password'];
 
       const response = [];
@@ -59,13 +58,6 @@ export const registerWithFirebase = (model) => async (dispatch) => {
       if (usernameErrorCodes.includes(error.code)) {
         response.push({
           type: 'username',
-          message: error.message,
-        });
-      }
-
-      if (emailErrorCodes.includes(error.code)) {
-        response.push({
-          type: 'email',
           message: error.message,
         });
       }

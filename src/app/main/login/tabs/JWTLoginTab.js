@@ -11,20 +11,18 @@ import { useDispatch, useSelector } from 'react-redux';
 import { submitLogin } from 'app/auth/store/loginSlice';
 import * as yup from 'yup';
 import _ from '@lodash';
+import { Link } from 'react-router-dom';
 
 /**
  * Form Validation Schema
  */
 const schema = yup.object().shape({
-  email: yup.string().email('You must enter a valid email').required('You must enter a email'),
-  password: yup
-    .string()
-    .required('Please enter your password.')
-    .min(4, 'Password is too short - should be 4 chars minimum.'),
+  username: yup.string().required('Kullanıcı adınızı giriniz'),
+  password: yup.string().required('Şifrenizi giriniz')
 });
 
 const defaultValues = {
-  email: '',
+  username: '',
   password: '',
 };
 
@@ -40,11 +38,6 @@ function JWTLoginTab(props) {
   const { isValid, dirtyFields, errors } = formState;
 
   const [showPassword, setShowPassword] = useState(false);
-
-  useEffect(() => {
-    setValue('email', 'admin@fusetheme.com', { shouldDirty: true, shouldValidate: true });
-    setValue('password', 'admin', { shouldDirty: true, shouldValidate: true });
-  }, [reset, setValue, trigger]);
 
   useEffect(() => {
     login.errors.forEach((error) => {
@@ -63,16 +56,17 @@ function JWTLoginTab(props) {
     <div className="w-full">
       <form className="flex flex-col justify-center w-full" onSubmit={handleSubmit(onSubmit)}>
         <Controller
-          name="email"
+          name="username"
           control={control}
           render={({ field }) => (
             <TextField
               {...field}
+              required
               className="mb-16"
               type="text"
-              error={!!errors.email}
-              helperText={errors?.email?.message}
-              label="Email"
+              error={!!errors.username}
+              helperText={errors?.username?.message}
+              label="Kullanıcı adı"
               InputProps={{
                 endAdornment: (
                   <InputAdornment position="end">
@@ -94,7 +88,7 @@ function JWTLoginTab(props) {
             <TextField
               {...field}
               className="mb-16"
-              label="Password"
+              label="Parola"
               type="password"
               error={!!errors.password}
               helperText={errors?.password?.message}
@@ -126,59 +120,9 @@ function JWTLoginTab(props) {
           disabled={_.isEmpty(dirtyFields) || !isValid}
           value="legacy"
         >
-          Login
+          Giriş yap
         </Button>
       </form>
-
-      <table className="w-full mt-32 text-center">
-        <thead className="mb-4">
-          <tr>
-            <th>
-              <Typography className="font-semibold text-11" color="textSecondary">
-                Role
-              </Typography>
-            </th>
-            <th>
-              <Typography className="font-semibold text-11" color="textSecondary">
-                Email
-              </Typography>
-            </th>
-            <th>
-              <Typography className="font-semibold text-11" color="textSecondary">
-                Password
-              </Typography>
-            </th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>
-              <Typography className="font-medium text-11" color="textSecondary">
-                Admin
-              </Typography>
-            </td>
-            <td>
-              <Typography className="text-11">admin@fusetheme.com</Typography>
-            </td>
-            <td>
-              <Typography className="text-11">admin</Typography>
-            </td>
-          </tr>
-          <tr>
-            <td>
-              <Typography className="font-medium text-11" color="textSecondary">
-                Staff
-              </Typography>
-            </td>
-            <td>
-              <Typography className="text-11">staff@fusetheme.com</Typography>
-            </td>
-            <td>
-              <Typography className="text-11">staff</Typography>
-            </td>
-          </tr>
-        </tbody>
-      </table>
     </div>
   );
 }

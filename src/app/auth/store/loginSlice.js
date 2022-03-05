@@ -5,13 +5,13 @@ import jwtService from 'app/services/jwtService';
 import { setUserData } from './userSlice';
 
 export const submitLogin =
-  ({ email, password }) =>
+  ({ username, password }) =>
   async (dispatch) => {
     return jwtService
-      .signInWithEmailAndPassword(email, password)
+      .signInWithUsernameAndPassword(username, password)
       .then((user) => {
         dispatch(setUserData(user));
-
+        window.open('/', '_self')
         return dispatch(loginSuccess());
       })
       .catch((errors) => {

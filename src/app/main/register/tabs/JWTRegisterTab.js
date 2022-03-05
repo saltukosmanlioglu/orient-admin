@@ -14,18 +14,15 @@ import _ from '@lodash';
  * Form Validation Schema
  */
 const schema = yup.object().shape({
-  displayName: yup.string().required('You must enter display name'),
-  email: yup.string().email('You must enter a valid email').required('You must enter a email'),
+  username: yup.string().required('Kullanıcı adı giriniz'),
   password: yup
     .string()
-    .required('Please enter your password.')
-    .min(8, 'Password is too short - should be 8 chars minimum.'),
+    .required('Parola giriniz'),
   passwordConfirm: yup.string().oneOf([yup.ref('password'), null], 'Passwords must match'),
 });
 
 const defaultValues = {
-  displayName: '',
-  email: '',
+  username: '',
   password: '',
   passwordConfirm: '',
 };
@@ -59,47 +56,21 @@ function JWTRegisterTab(props) {
     <div className="w-full">
       <form className="flex flex-col justify-center w-full" onSubmit={handleSubmit(onSubmit)}>
         <Controller
-          name="displayName"
+          name="username"
           control={control}
           render={({ field }) => (
             <TextField
               {...field}
               className="mb-16"
               type="text"
-              label="Display name"
-              error={!!errors.displayName}
-              helperText={errors?.displayName?.message}
+              label="Kullanıcı adı"
+              error={!!errors.username}
+              helperText={errors?.username?.message}
               InputProps={{
                 endAdornment: (
                   <InputAdornment position="end">
                     <Icon className="text-20" color="action">
                       person
-                    </Icon>
-                  </InputAdornment>
-                ),
-              }}
-              variant="outlined"
-              required
-            />
-          )}
-        />
-
-        <Controller
-          name="email"
-          control={control}
-          render={({ field }) => (
-            <TextField
-              {...field}
-              className="mb-16"
-              type="text"
-              error={!!errors.email}
-              helperText={errors?.email?.message}
-              label="Email"
-              InputProps={{
-                endAdornment: (
-                  <InputAdornment position="end">
-                    <Icon className="text-20" color="action">
-                      email
                     </Icon>
                   </InputAdornment>
                 ),
@@ -118,7 +89,7 @@ function JWTRegisterTab(props) {
               {...field}
               className="mb-16"
               type="password"
-              label="Password"
+              label="Parola"
               error={!!errors.password}
               helperText={errors?.password?.message}
               InputProps={{
@@ -144,7 +115,7 @@ function JWTRegisterTab(props) {
               {...field}
               className="mb-16"
               type="password"
-              label="Confirm Password"
+              label="Parolayı doğrula"
               error={!!errors.passwordConfirm}
               helperText={errors?.passwordConfirm?.message}
               InputProps={{
@@ -171,7 +142,7 @@ function JWTRegisterTab(props) {
           disabled={_.isEmpty(dirtyFields) || !isValid}
           value="legacy"
         >
-          Register
+          Kayıt ol
         </Button>
       </form>
     </div>
