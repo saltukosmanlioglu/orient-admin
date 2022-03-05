@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { useNavigate } from 'react-router-dom';
 import { styled } from '@mui/material/styles';
 import Box from '@mui/material/Box';
@@ -8,7 +8,6 @@ import Button from '@mui/material/Button';
 import FormControl from '@mui/material/FormControl';
 import Grid from '@mui/material/Grid';
 import InputLabel from '@mui/material/InputLabel';
-import Input from '@mui/material/Input';
 import MenuItem from '@mui/material/MenuItem';
 import product from 'app/main/services/controller/product';
 import Select from '@mui/material/Select';
@@ -59,6 +58,7 @@ function CreateProduct() {
   const [categories, setCategories] = useState()
   const [subCategories, setSubCategories] = useState()
 
+  const uploadFileRef = useRef(null)
   const navigate = useNavigate()
 
   const handleFieldChange = (key, value) => {
@@ -67,9 +67,17 @@ function CreateProduct() {
 
   const handleSubmit = (e) => {
     e.preventDefault()
-    product.create({ ...formData })
-      .then(() => {
-        navigate('/pages/products')
+    let multipartFormData = new FormData();
+    multipartFormData.append("uploadFile", uploadFileRef.current);
+
+    file.upload(multipartFormData)
+      .then(({ data }) => {
+        if (data.uploadedFilePath) {
+          product.create({ ...formData, image: data.uploadedFilePath })
+            .then(() => {
+              navigate('/pages/products')
+            })
+        }
       })
       .catch(error => console.log(error))
   }
@@ -119,8 +127,10 @@ function CreateProduct() {
                 fullWidth
                 id="outlined-basic"
                 variant="outlined"
-                onChange={(e) => handleFieldChange('image', e.currentTarget.value)}
-                value={formData.image}
+                onChange={(e) => {
+                  uploadFileRef.current = e.target.files[0]
+                  console.log(uploadFileRef.current)
+                }}
                 type="file"
               />
             </Grid>
@@ -153,7 +163,7 @@ function CreateProduct() {
                 id="outlined-basic"
                 label="Fiyat"
                 variant="outlined"
-                onChange={(e) => handleFieldChange('price', e.currentTarget.value)}
+                onChange={(e) => handleFieldChange('price', Number(e.currentTarget.value))}
                 value={formData.price}
               />
             </Grid>

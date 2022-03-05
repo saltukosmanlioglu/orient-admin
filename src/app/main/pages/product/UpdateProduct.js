@@ -131,6 +131,7 @@ function UpdateProduct() {
   const renderForm = () => {
     return (
       <div className="mt-20">
+        <img src={`${process.env.REACT_APP_API}file/serve/instagram.png`} />
         <form onSubmit={handleSubmit}>
           <Box sx={{ flexGrow: 1 }}>
             <Grid container spacing={2}>
