@@ -123,17 +123,7 @@ function CreateSubCategory() {
               />
             </Grid>
             <Grid item xs={6}>
-              <TextField
-                fullWidth
-                id="outlined-basic"
-                label="Renk kodu"
-                variant="outlined"
-                onChange={(e) => handleFieldChange('color', e.currentTarget.value)}
-                value={formData.color}
-              />
-            </Grid>
-            <Grid item xs={6}>
-              <FormControl fullWidth>
+              <FormControl required fullWidth>
                 <InputLabel id="demo-simple-select-helper-label">Kategori</InputLabel>
                 <Select
                   required
@@ -155,6 +145,16 @@ function CreateSubCategory() {
                   ))}
                 </Select>
               </FormControl>
+            </Grid>
+            <Grid item xs={6}>
+              <TextField
+                fullWidth
+                id="outlined-basic"
+                label="Renk kodu"
+                variant="outlined"
+                onChange={(e) => handleFieldChange('color', e.currentTarget.value)}
+                value={formData.color}
+              />
             </Grid>
           </Grid>
         </Box>

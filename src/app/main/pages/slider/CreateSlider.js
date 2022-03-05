@@ -43,13 +43,8 @@ const Root = styled('div')(({ theme }) => ({
 
 function CreateSlider() {
   const [formData, setFormData] = useState({
-    allergens: '',
-    categoryId: 0,
-    description: '',
     image: '',
-    price: 0,
-    subCategoryId: 0,
-    title: '',
+    productId: 0,
   })
 
   const [products, setProducts] = useState()
@@ -75,7 +70,7 @@ function CreateSlider() {
       .catch(error => console.log(error))
   }
 
-  useEffect(() => getProducts(), [getProducts])
+  useEffect(() => getProducts(), [])
 
   const renderHeader = () => {
     return (
@@ -108,16 +103,27 @@ function CreateSlider() {
         <Box sx={{ flexGrow: 1 }}>
           <Grid container spacing={2}>
             <Grid item xs={6}>
+              <TextField
+                required
+                fullWidth
+                id="outlined-basic"
+                variant="outlined"
+                onChange={(e) => handleFieldChange('image', e.currentTarget.value)}
+                value={formData.image}
+                type="file"
+              />
+            </Grid>
+            <Grid item xs={6}>
               <FormControl fullWidth>
-                <InputLabel id="demo-simple-select-helper-label">Alt kategori</InputLabel>
+                <InputLabel id="demo-simple-select-helper-label">Ürün adı</InputLabel>
                 <Select
                   required
                   fullWidth
                   labelId="demo-simple-select-helper-label"
                   id="demo-simple-select-helper"
-                  value={formData.subCategoryId}
-                  label="Ürün"
-                  onChange={(e) => handleFieldChange('subCategoryId', e.target.value)}
+                  value={formData.productId}
+                  label="Ürün adı"
+                  onChange={(e) => handleFieldChange('productId', e.target.value)}
                 >
                   {products && products.map((product) => (
                     <MenuItem

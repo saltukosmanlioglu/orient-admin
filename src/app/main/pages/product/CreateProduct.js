@@ -8,6 +8,7 @@ import Button from '@mui/material/Button';
 import FormControl from '@mui/material/FormControl';
 import Grid from '@mui/material/Grid';
 import InputLabel from '@mui/material/InputLabel';
+import Input from '@mui/material/Input';
 import MenuItem from '@mui/material/MenuItem';
 import product from 'app/main/services/controller/product';
 import Select from '@mui/material/Select';
@@ -76,9 +77,6 @@ function CreateProduct() {
     category.list()
       .then(({ data }) => setCategories(data))
       .catch(error => console.log(error))
-  }, [])
-
-  useEffect(() => {
     subCategory.list()
       .then(({ data }) => setSubCategories(data))
       .catch(error => console.log(error))
@@ -119,10 +117,10 @@ function CreateProduct() {
                 required
                 fullWidth
                 id="outlined-basic"
-                label="Ürün adı"
                 variant="outlined"
-                onChange={(e) => handleFieldChange('title', e.currentTarget.value)}
-                value={formData.title}
+                onChange={(e) => handleFieldChange('image', e.currentTarget.value)}
+                value={formData.image}
+                type="file"
               />
             </Grid>
             <Grid item xs={6}>
@@ -130,10 +128,10 @@ function CreateProduct() {
                 required
                 fullWidth
                 id="outlined-basic"
-                label="Fiyat"
+                label="Ürün adı"
                 variant="outlined"
-                onChange={(e) => handleFieldChange('price', e.currentTarget.value)}
-                value={formData.price}
+                onChange={(e) => handleFieldChange('title', e.currentTarget.value)}
+                value={formData.title}
               />
             </Grid>
             <Grid item xs={12}>
@@ -145,6 +143,17 @@ function CreateProduct() {
                 variant="outlined"
                 onChange={(e) => handleFieldChange('description', e.currentTarget.value)}
                 value={formData.description}
+              />
+            </Grid>
+            <Grid item xs={6}>
+              <TextField
+                required
+                fullWidth
+                id="outlined-basic"
+                label="Fiyat"
+                variant="outlined"
+                onChange={(e) => handleFieldChange('price', e.currentTarget.value)}
+                value={formData.price}
               />
             </Grid>
             <Grid item xs={12}>

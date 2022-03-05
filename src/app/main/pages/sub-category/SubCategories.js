@@ -187,7 +187,7 @@ function SubCategories() {
       <div className="pl-60 pr-60 pt-20 pb-20">
         {renderBreadcrumb()}
         {renderHeader()}
-        {renderFilter()}
+        {/* {renderFilter()} */}
         <div className='mt-20'>
           {renderTable()}
         </div>

@@ -124,7 +124,7 @@
         "util": "^0.12.4"
     },
     "scripts": {
-        "start": "craco start",
+        "start": "craco start -p 4000",
         "build": "cross-env GENERATE_SOURCEMAP=false craco build",
         "test": "craco test --env=node",
         "eject": "craco eject",
