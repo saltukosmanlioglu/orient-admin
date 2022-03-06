@@ -129,7 +129,6 @@ function CreateProduct() {
                 variant="outlined"
                 onChange={(e) => {
                   uploadFileRef.current = e.target.files[0]
-                  console.log(uploadFileRef.current)
                 }}
                 type="file"
               />

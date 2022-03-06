@@ -16,6 +16,7 @@ import { styled } from '@mui/material/styles';
 import { useNavigate, useParams } from 'react-router-dom';
 import Grid from '@mui/material/Grid';
 import slider from 'app/main/services/controller/slider';
+import product from 'app/main/services/controller/product';
 
 const Root = styled('div')(({ theme }) => ({
   '& .FaqPage-header': {

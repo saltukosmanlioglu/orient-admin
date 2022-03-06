@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import Typography from '@mui/material/Typography';
 import Breadcrumbs from '@mui/material/Breadcrumbs';
 import Button from '@mui/material/Button';
@@ -11,6 +11,7 @@ import FormControl from '@mui/material/FormControl';
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
 import slider from 'app/main/services/controller/slider';
+import file from 'app/main/services/controller/file';
 import product from 'app/main/services/controller/product';
 import TextField from '@mui/material/TextField';
 import { styled } from '@mui/material/styles';
@@ -49,6 +50,7 @@ function CreateSlider() {
 
   const [products, setProducts] = useState()
 
+  const uploadFileRef = useRef(null)
   const navigate = useNavigate()
 
   const handleFieldChange = (key, value) => {
@@ -57,9 +59,17 @@ function CreateSlider() {
 
   const handleSubmit = (e) => {
     e.preventDefault()
-    slider.create({ ...formData })
-      .then(() => {
-        navigate('/pages/sliders')
+    let multipartFormData = new FormData();
+    multipartFormData.append("uploadFile", uploadFileRef.current);
+
+    file.upload(multipartFormData)
+      .then(({ data }) => {
+        if (data.uploadedFilePath) {
+          slider.create({ ...formData, image: data.uploadedFilePath })
+            .then(() => {
+              navigate('/pages/sliders')
+            })
+        }
       })
       .catch(error => console.log(error))
   }
@@ -106,8 +116,9 @@ function CreateSlider() {
                 fullWidth
                 id="outlined-basic"
                 variant="outlined"
-                onChange={(e) => handleFieldChange('image', e.currentTarget.value)}
-                value={formData.image}
+                onChange={(e) => {
+                  uploadFileRef.current = e.target.files[0]
+                }}
                 type="file"
               />
             </Grid>

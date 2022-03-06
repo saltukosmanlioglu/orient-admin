@@ -131,10 +131,24 @@ function UpdateProduct() {
   const renderForm = () => {
     return (
       <div className="mt-20">
-        <img src={`${process.env.REACT_APP_API}file/serve/instagram.png`} />
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }} className="mb-20">
+          <img width="50%" src={`${process.env.REACT_APP_API}file/serve/${formData.image}`} />
+        </div>
         <form onSubmit={handleSubmit}>
           <Box sx={{ flexGrow: 1 }}>
             <Grid container spacing={2}>
+              <Grid item xs={6}>
+                <TextField
+                  required
+                  fullWidth
+                  id="outlined-basic"
+                  variant="outlined"
+                  onChange={(e) => {
+                    uploadFileRef.current = e.target.files[0]
+                  }}
+                  type="file"
+                />
+              </Grid>
               <Grid item xs={6}>
                 <TextField
                   required

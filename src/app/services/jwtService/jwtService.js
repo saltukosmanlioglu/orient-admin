@@ -2,6 +2,7 @@ import FuseUtils from '@fuse/utils/FuseUtils';
 import auth from 'app/main/services/controller/auth';
 import axios from 'axios';
 import jwtDecode from 'jwt-decode';
+import service from 'app/main/services/instance'
 /* eslint-disable camelcase */
 
 class JwtService extends FuseUtils.EventEmitter {
@@ -110,9 +111,11 @@ class JwtService extends FuseUtils.EventEmitter {
     if (access_token) {
       localStorage.setItem('jwt_access_token', access_token);
       axios.defaults.headers.common.Authorization = `Bearer ${access_token}`;
+      service.defaults.headers.common.Authorization = `Bearer ${access_token}`;
     } else {
       localStorage.removeItem('jwt_access_token');
       delete axios.defaults.headers.common.Authorization;
+      delete service.defaults.headers.common.Authorization;
     }
   };
 
