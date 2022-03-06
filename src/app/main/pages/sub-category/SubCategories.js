@@ -52,14 +52,11 @@ function SubCategories() {
   const [subCategories, setSubCategories] = useState()
   const [categories, setCategories] = useState()
 
-  const [title, setTitle] = useState('')
-  const [activeCategory, setActiveCategory] = useState('')
-
   useEffect(() => {
     category.list()
       .then(({ data }) => setCategories(data))
       .catch(error => console.log(error))
-    subCategory.list({ title: title })
+    subCategory.list()
       .then(({ data }) => setSubCategories(data))
       .catch(error => console.log(error))
   }, [])
@@ -122,64 +119,11 @@ function SubCategories() {
     )
   }
 
-  const renderFilter = () => {
-    return (
-      <div className='mt-20'>
-        <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
-          <Box sx={{ flexGrow: 1 }}>
-            <Grid container spacing={2}>
-              <Grid item xs={4}>
-                <TextField
-                  fullWidth
-                  id="outlined-basic"
-                  label="Alt kategori adı"
-                  variant="outlined"
-                  value={title}
-                  onChange={(e) => setTitle(e.currentTarget.value)}
-                />
-              </Grid>
-              <Grid item xs={4}>
-                <FormControl fullWidth>
-                  <InputLabel id="demo-simple-select-helper-label">Kategori</InputLabel>
-                  <Select
-                    fullWidth
-                    labelId="demo-simple-select-helper-label"
-                    id="demo-simple-select-helper"
-                    value={activeCategory}
-                    label="Kategori"
-                    onChange={(e) => setActiveCategory(e.target.value)}
-                  >
-                    {categories && categories.map((category) => (
-                      <MenuItem
-                        key={category.id}
-                        value={category.id}
-                        style={{ color: category.color }}
-                      >
-                        {category.title}
-                      </MenuItem>
-                    ))}
-                  </Select>
-                </FormControl>
-              </Grid>
-              <Grid item>
-                <ButtonGroup>
-                  <Button color="info" variant="contained" onClick={() => getSubCategories()}>Arama yap</Button>
-                  <Button color="error" variant="contained">Filtreyi temizle</Button>
-                </ButtonGroup>
-              </Grid>
-            </Grid>
-          </Box>
-        </div>
-      </div>
-    )
-  }
-
   return (
     <Root className="w-full flex flex-col flex-auto">
       <div className="pl-60 pr-60 pt-20 pb-20">
         {renderBreadcrumb()}
         {renderHeader()}
-        {/* {renderFilter()} */}
         <div className='mt-20'>
           {renderTable()}
         </div>

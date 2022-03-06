@@ -108,39 +108,11 @@ function Categories() {
     )
   }
 
-  const renderFilter = () => {
-    return (
-      <div className='mt-20'>
-        <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
-          <Box
-            component="form"
-            sx={{ '& > :not(style)': { m: 1, width: '25ch' } }}
-            noValidate
-            autoComplete="off"
-          >
-            <TextField
-              id="outlined-basic"
-              label="Kategori adı"
-              variant="outlined"
-              value={title}
-              onChange={(e) => setTitle(e.currentTarget.value)}
-            />
-          </Box>
-          <ButtonGroup>
-            <Button color="info" variant="contained" onClick={() => getCategories()}>Arama yap</Button>
-            <Button color="error" variant="contained">Filtreyi temizle</Button>
-          </ButtonGroup>
-        </div>
-      </div>
-    )
-  }
-
   return (
     <Root className="w-full flex flex-col flex-auto">
       <div className="pl-60 pr-60 pt-20 pb-20">
         {renderBreadcrumb()}
         {renderHeader()}
-        {/* {renderFilter()} */}
         <div className='mt-20'>
           {renderTable()}
         </div>

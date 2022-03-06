@@ -51,7 +51,7 @@ function CreateProduct() {
     description: '',
     image: '',
     price: 0,
-    subCategoryId: 0,
+    subCategoryId: undefined,
     title: '',
   })
 
@@ -205,7 +205,6 @@ function CreateProduct() {
               <FormControl fullWidth>
                 <InputLabel id="demo-simple-select-helper-label">Alt kategori</InputLabel>
                 <Select
-                  required
                   fullWidth
                   labelId="demo-simple-select-helper-label"
                   id="demo-simple-select-helper"

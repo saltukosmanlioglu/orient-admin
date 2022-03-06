@@ -1,7 +1,11 @@
 import service from "../../instance"
 
-export const create = (payload) =>
-  service.post("product", payload)
+export const create = (payload) => {
+  Object.keys(payload).forEach((key) =>
+    payload[key] === undefined ? delete payload[key] : {}
+  )
+  return service.post("product", payload)
+}
 
 export const update = (id, payload) =>
   service.put(`product/${id}`, payload)
