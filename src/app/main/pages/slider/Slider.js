@@ -15,6 +15,7 @@ import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import { styled } from '@mui/material/styles';
 import slider from 'app/main/services/controller/slider';
+import NoContent from 'app/main/components/no-content';
 
 const Root = styled('div')(({ theme }) => ({
   '& .FaqPage-header': {
@@ -43,7 +44,7 @@ const Root = styled('div')(({ theme }) => ({
 
 function Slider() {
   const [sliders, setSliders] = useState()
-  
+
   useEffect(() => {
     slider.list()
       .then(({ data }) => setSliders(data))
@@ -78,7 +79,7 @@ function Slider() {
   }
 
   const renderTable = () => {
-    return (
+    return sliders && sliders.length > 0 ? (
       <TableContainer component={Paper}>
         <Table sx={{ minWidth: 650 }} aria-label="simple table">
           <TableHead>
@@ -101,7 +102,7 @@ function Slider() {
           </TableBody>
         </Table>
       </TableContainer>
-    )
+    ) : <NoContent message="Slider verisi bulunamadı" />
   }
 
   return (

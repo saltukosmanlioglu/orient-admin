@@ -5,6 +5,7 @@ import { styled } from '@mui/material/styles';
 import Box from '@mui/material/Box';
 import Breadcrumbs from '@mui/material/Breadcrumbs';
 import Button from '@mui/material/Button';
+import LoadingButton from '@mui/lab/LoadingButton';
 import Grid from '@mui/material/Grid';
 import MuiAlert from '@mui/material/Alert';
 import Snackbar from '@mui/material/Snackbar';
@@ -45,6 +46,7 @@ function CreateCategory() {
     title: '',
   })
 
+  const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState(false)
 
   const navigate = useNavigate()
@@ -55,12 +57,15 @@ function CreateCategory() {
 
   const handleSubmit = (e) => {
     e.preventDefault()
+    setIsLoading(true)
     category.create({ ...formData })
       .then(() => navigate('/pages/categories'))
       .catch(error => {
         console.log(error)
+        setIsLoading(false)
         setError(true)
       })
+      .finally(() => setIsLoading(false))
   }
 
   const renderHeader = () => {
@@ -119,7 +124,14 @@ function CreateCategory() {
         </Box>
         <div className='mt-20' style={{ width: '100%', display: 'flex', alignItems: 'center', justifyContent: 'flex-end' }}>
           <Stack spacing={2} direction="row">
-            <Button type="submit" color="info" variant="contained">Kategori oluştur</Button>
+            <LoadingButton
+              type="submit"
+              color="info"
+              loading={isLoading}
+              variant="contained"
+            >
+              Kategori oluştur
+            </LoadingButton>
             <Button href="/pages/categories" color="inherit">İptal</Button>
           </Stack>
         </div>

@@ -16,6 +16,7 @@ import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
 
 import product from 'app/main/services/controller/product';
+import NoContent from 'app/main/components/no-content';
 
 const Root = styled('div')(({ theme }) => ({
   '& .FaqPage-header': {
@@ -81,7 +82,7 @@ function Products() {
   }
 
   const renderTable = () => {
-    return (
+    return products && products.length > 0 ? (
       <TableContainer component={Paper}>
         <Table sx={{ minWidth: 650 }} aria-label="simple table">
           <TableHead>
@@ -114,6 +115,8 @@ function Products() {
           </TableBody>
         </Table>
       </TableContainer>
+    ) : (
+      <NoContent message="Ürün verisi bulunamadı" />
     )
   }
 

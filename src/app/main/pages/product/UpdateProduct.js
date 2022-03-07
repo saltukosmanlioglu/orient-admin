@@ -3,6 +3,12 @@ import { useEffect, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom';
 import { styled } from '@mui/material/styles';
 import Box from '@mui/material/Box';
+import Tab from '@mui/material/Tab';
+import TabContext from '@mui/lab/TabContext';
+import TabList from '@mui/lab/TabList';
+import TabPanel from '@mui/lab/TabPanel';
+import InfoIcon from '@mui/icons-material/Info';
+import GTranslateIcon from '@mui/icons-material/GTranslate';
 import Breadcrumbs from '@mui/material/Breadcrumbs';
 import Button from '@mui/material/Button';
 import ButtonGroup from '@mui/material/ButtonGroup';
@@ -60,6 +66,7 @@ function UpdateProduct() {
   const [subCategories, setSubCategories] = useState()
 
   const [confirmationModal, setConfirmationModal] = useState(false)
+  const [value, setValue] = useState('1')
 
   const params = useParams()
   const navigate = useNavigate()
@@ -253,12 +260,35 @@ function UpdateProduct() {
     )
   }
 
+  const renderLanguageSupport = () => {
+    return (
+      <div>sa</div>
+    )
+  }
+
+  const renderTab = () => {
+    return (
+      <Box sx={{ width: '100%', typography: 'body1' }}>
+        <TabContext value={value}>
+          <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
+            <TabList onChange={(e, i) => setValue(i)}>
+              <Tab icon={<InfoIcon />} iconPosition="start" label="Bilgiler" value="1" />
+              <Tab icon={<GTranslateIcon />} iconPosition="start" label="Dil desteği" value="2" />
+            </TabList>
+          </Box>
+          <TabPanel value="1">{renderForm()}</TabPanel>
+          <TabPanel value="2">{renderLanguageSupport()}</TabPanel>
+        </TabContext>
+      </Box>
+    )
+  }
+
   return (
     <Root className="w-full flex flex-col flex-auto">
       <div className="pl-60 pr-60 pt-20 pb-20">
         {renderBreadcrumb()}
         {renderHeader()}
-        {renderForm()}
+        {renderTab()}
       </div>
       <Modal
         open={confirmationModal}

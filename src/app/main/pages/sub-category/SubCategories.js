@@ -22,6 +22,7 @@ import Typography from '@mui/material/Typography';
 
 import category from 'app/main/services/controller/category';
 import subCategory from 'app/main/services/controller/sub-category';
+import NoContent from 'app/main/components/no-content';
 
 const Root = styled('div')(({ theme }) => ({
   '& .FaqPage-header': {
@@ -89,7 +90,7 @@ function SubCategories() {
   }
 
   const renderTable = () => {
-    return (
+    return subCategories && subCategories.length > 0 ? (
       <TableContainer component={Paper}>
         <Table sx={{ minWidth: 650 }} aria-label="simple table">
           <TableHead>
@@ -116,7 +117,7 @@ function SubCategories() {
           </TableBody>
         </Table>
       </TableContainer>
-    )
+    ) : <NoContent message="Alt kategori verisi bulunamadı" />
   }
 
   return (

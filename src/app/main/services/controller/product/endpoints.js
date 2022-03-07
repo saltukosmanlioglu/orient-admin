@@ -1,6 +1,7 @@
 import service from "../../instance"
 
 export const create = (payload) => {
+  if (payload.subCategoryId) delete payload.categoryId
   Object.keys(payload).forEach((key) =>
     payload[key] === undefined ? delete payload[key] : {}
   )
