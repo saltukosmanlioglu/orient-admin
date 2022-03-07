@@ -45,6 +45,13 @@ const navigationConfig = [
         icon: 'image',
         url: 'pages/sliders',
       },
+      {
+        id: 'languages',
+        title: 'Dil desteği',
+        type: 'item',
+        icon: 'language',
+        url: 'pages/languages',
+      },
     ],
   },
   DocumentationNavigation,

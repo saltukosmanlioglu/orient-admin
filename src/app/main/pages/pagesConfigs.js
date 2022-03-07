@@ -13,15 +13,18 @@ import ResetPasswordPageConfig from './auth/reset-password/ResetPasswordPageConf
 import ProfilePageConfig from './profile/ProfilePageConfig';
 
 import CategoryPageConfig from './category/CategoryPageConfig';
+import LanguagePageConfig from './language/LanguagePageConfig';
 import ProductPageConfig from './product/ProductPageConfig';
 import SliderPageConfig from './slider/SliderPageConfig';
 import SubCategoryPageConfig from './sub-category/SubCategoryPageConfig';
 
 const pagesConfigs = [
   CategoryPageConfig,
-  SubCategoryPageConfig,
+  LanguagePageConfig,
   ProductPageConfig,
   SliderPageConfig,
+  SubCategoryPageConfig,
+  
   LoginPageConfig,
   RegisterPageConfig,
   ResetPasswordPageConfig,
