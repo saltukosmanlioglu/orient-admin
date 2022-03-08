@@ -6,7 +6,6 @@ import Box from '@mui/material/Box';
 import Breadcrumbs from '@mui/material/Breadcrumbs';
 import Button from '@mui/material/Button';
 import FormControl from '@mui/material/FormControl';
-import TextareaAutosize from '@mui/material/TextareaAutosize';
 import Grid from '@mui/material/Grid';
 import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
@@ -66,21 +65,27 @@ function CreateProduct() {
     setFormData({ ...formData, [key]: value })
   }
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault()
     let multipartFormData = new FormData();
     multipartFormData.append("uploadFile", uploadFileRef.current);
 
-    file.upload(multipartFormData)
-      .then(({ data }) => {
-        if (data.uploadedFilePath) {
-          product.create({ ...formData, image: data.uploadedFilePath })
-            .then(() => {
-              navigate('/pages/products')
-            })
-        }
-      })
-      .catch(error => console.log(error))
+    let uploaded
+    if (uploadFileRef.current) {
+      uploaded = (await file.upload(multipartFormData)).data
+    }
+
+    if (uploaded?.uploadedFilePath) {
+      product.create({ ...formData, image: uploaded.uploadedFilePath })
+        .then(() => {
+          navigate('/pages/products')
+        })
+    } else {
+      product.create({ ...formData })
+        .then(() => {
+          navigate('/pages/products')
+        })
+    }
   }
 
   useEffect(() => {

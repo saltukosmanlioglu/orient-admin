@@ -9,6 +9,13 @@ import TabList from '@mui/lab/TabList';
 import TabPanel from '@mui/lab/TabPanel';
 import InfoIcon from '@mui/icons-material/Info';
 import GTranslateIcon from '@mui/icons-material/GTranslate';
+import Paper from '@mui/material/Paper';
+import Table from '@mui/material/Table';
+import TableBody from '@mui/material/TableBody';
+import TableCell from '@mui/material/TableCell';
+import TableContainer from '@mui/material/TableContainer';
+import TableHead from '@mui/material/TableHead';
+import TableRow from '@mui/material/TableRow';
 import Breadcrumbs from '@mui/material/Breadcrumbs';
 import MuiAlert from '@mui/material/Alert';
 import Snackbar from '@mui/material/Snackbar';
@@ -55,6 +62,7 @@ function UpdateCategory() {
     title: '',
   })
   const [languageFormData, setLanguageFormData] = useState({
+    id: 0,
     title: '',
   })
   const [languages, setLanguages] = useState([])
@@ -100,7 +108,7 @@ function UpdateCategory() {
   }
 
   const handleUpdateLangSubmit = (e) => {
-    categoryLocale.update({
+    categoryLocale.update(languageFormData.id, {
       ...languageFormData,
       categoryId: Number(params.id),
       locale: activeLanguage
@@ -227,46 +235,64 @@ function UpdateCategory() {
   const renderLanguageSupport = () => {
     return (
       <div className="mt-20">
-        <Box sx={{ flexGrow: 1 }}>
-          <Grid container spacing={2}>
+        <TableContainer component={Paper}>
+          <Table sx={{ minWidth: 650 }} aria-label="simple table">
+            <TableHead>
+              <TableRow>
+                <TableCell>Dil kodu</TableCell>
+                <TableCell>Kategori adı</TableCell>
+                <TableCell>İşlemler</TableCell>
+              </TableRow>
+            </TableHead>
             {languages.map((lang, index) => (
-              locales.find((locale) => locale.locale === lang) ? (
-                <Grid key={index} xs={4}>
-                  <Button
-                    variant="contained"
-                    color="info"
-                    onClick={() => {
-                      setActiveLanguage(lang.language)
-                      setLanguageModal(true)
-                      setLanguageModalType('update')
-                      setLanguageFormData(prev => ({
-                        ...prev,
-                        title: locales.find((locale) => locale.locale === lang.language).title
-                      }))
-                    }}
-                  >
-                    {lang}: {locales.find((locale) => locale.locale === lang.language)?.title}
-                  </Button>
-                </Grid>
+              locales.find((locale) => locale.locale === lang.language) ? (
+                <TableRow key={index} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
+                  <TableCell>{lang.language}</TableCell>
+                  <TableCell>{locales.find((locale) => locale.locale === lang.language)?.title}</TableCell>
+                  <TableCell>
+                    <Button
+                      variant="contained"
+                      color="info"
+                      onClick={() => {
+                        setActiveLanguage(lang.language)
+                        setLanguageModal(true)
+                        setLanguageModalType('update')
+                        setLanguageFormData(prev => ({
+                          ...prev,
+                          id: lang.id,
+                          title: locales.find((locale) => locale.locale === lang.language).title
+                        }))
+                      }}
+                    >
+                      Güncelle
+                    </Button>
+                  </TableCell>
+                </TableRow>
               ) : (
-                <Grid key={index} xs={4}>
-                  <Button
-                    variant="contained"
-                    color="info"
-                    onClick={() => {
-                      setActiveLanguage(lang.language)
-                      setLanguageModal(true)
-                      setLanguageModalType('create')
-                      setLanguageFormData({ title: '' })
-                    }}
-                  >
-                    {lang.language}
-                  </Button>
-                </Grid>
+                <TableRow key={index} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
+                  <TableCell>Oluşturulmadı</TableCell>
+                  <TableCell>
+                    <Button
+                      variant="contained"
+                      color="info"
+                      onClick={() => {
+                        setActiveLanguage(lang.language)
+                        setLanguageModal(true)
+                        setLanguageModalType('create')
+                        setLanguageFormData(prev => ({
+                          ...prev,
+                          title: ''
+                        }))
+                      }}
+                    >
+                      Ekle
+                    </Button>
+                  </TableCell>
+                </TableRow>
               )
             ))}
-          </Grid>
-        </Box>
+          </Table>
+        </TableContainer>
       </div>
     )
   }
@@ -352,7 +378,7 @@ function UpdateCategory() {
           <Typography id="modal-modal-title" variant="h6" component="h2">
             {activeLanguage} Dil desteği {languageModalType === 'update' ? 'güncelle' : 'ekle'}
           </Typography>
-          <Box sx={{ flexGrow: 1 }}>
+          <Box className='mt-20' sx={{ flexGrow: 1 }}>
             <Grid container spacing={2}>
               <Grid item xs={12}>
                 <TextField

@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useRef } from 'react'
 import { useNavigate, useParams } from 'react-router-dom';
 import { styled } from '@mui/material/styles';
 import Box from '@mui/material/Box';
@@ -23,6 +23,7 @@ import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
 
 import category from 'app/main/services/controller/category';
+import file from 'app/main/services/controller/file';
 import product from 'app/main/services/controller/product';
 import subCategory from 'app/main/services/controller/sub-category';
 
@@ -68,6 +69,7 @@ function UpdateProduct() {
   const [confirmationModal, setConfirmationModal] = useState(false)
   const [value, setValue] = useState('1')
 
+  const uploadFileRef = useRef(null)
   const params = useParams()
   const navigate = useNavigate()
 
@@ -84,13 +86,27 @@ function UpdateProduct() {
       .catch(() => setConfirmationModal(false))
   }
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault()
-    product.update(params.id, { ...formData })
-      .then(() => {
-        navigate('/pages/products')
-      })
-      .catch(error => console.log(error))
+    let multipartFormData = new FormData();
+    multipartFormData.append("uploadFile", uploadFileRef.current);
+
+    let uploaded
+    if (uploadFileRef.current) {
+      uploaded = (await file.upload(multipartFormData)).data
+    }
+
+    if (uploaded?.uploadedFilePath) {
+      product.update(params.id, { ...formData, image: uploaded.uploadedFilePath })
+        .then(() => {
+          navigate('/pages/products')
+        })
+    } else {
+      product.update(params.id, { ...formData })
+        .then(() => {
+          navigate('/pages/products')
+        })
+    }
   }
 
   useEffect(() => {
@@ -146,7 +162,6 @@ function UpdateProduct() {
             <Grid container spacing={2}>
               <Grid item xs={6}>
                 <TextField
-                  required
                   fullWidth
                   id="outlined-basic"
                   variant="outlined"
@@ -211,7 +226,7 @@ function UpdateProduct() {
                     label="Kategori"
                     onChange={(e) => handleFieldChange('categoryId', e.target.value)}
                   >
-                    <MenuItem value="">
+                    <MenuItem value={undefined}>
                       <em>Seçiniz..</em>
                     </MenuItem>
                     {categories && categories.map((category) => (
@@ -230,7 +245,6 @@ function UpdateProduct() {
                 <FormControl fullWidth>
                   <InputLabel id="demo-simple-select-helper-label">Alt kategori</InputLabel>
                   <Select
-                    required
                     fullWidth
                     labelId="demo-simple-select-helper-label"
                     id="demo-simple-select-helper"
@@ -238,7 +252,7 @@ function UpdateProduct() {
                     label="Alt kategori"
                     onChange={(e) => handleFieldChange('subCategoryId', e.target.value)}
                   >
-                    <MenuItem value="">
+                    <MenuItem value={undefined}>
                       <em>Seçiniz..</em>
                     </MenuItem>
                     {subCategories && subCategories.map((subCategory) => (
