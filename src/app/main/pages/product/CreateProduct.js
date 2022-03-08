@@ -6,6 +6,7 @@ import Box from '@mui/material/Box';
 import Breadcrumbs from '@mui/material/Breadcrumbs';
 import Button from '@mui/material/Button';
 import FormControl from '@mui/material/FormControl';
+import TextareaAutosize from '@mui/material/TextareaAutosize';
 import Grid from '@mui/material/Grid';
 import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
@@ -148,6 +149,8 @@ function CreateProduct() {
               <TextField
                 required
                 fullWidth
+                rows={3}
+                multiline
                 id="outlined-basic"
                 label="Açıklama"
                 variant="outlined"
@@ -170,6 +173,8 @@ function CreateProduct() {
               <TextField
                 fullWidth
                 id="outlined-basic"
+                rows={2}
+                multiline
                 label="Alerjenler"
                 variant="outlined"
                 onChange={(e) => handleFieldChange('allergens', e.currentTarget.value)}
@@ -188,6 +193,9 @@ function CreateProduct() {
                   label="Kategori"
                   onChange={(e) => handleFieldChange('categoryId', e.target.value)}
                 >
+                  <MenuItem value="">
+                    <em>Seçiniz..</em>
+                  </MenuItem>
                   {categories && categories.map((category) => (
                     <MenuItem
                       key={category.id}
@@ -211,6 +219,9 @@ function CreateProduct() {
                   label="Alt kategori"
                   onChange={(e) => handleFieldChange('subCategoryId', e.target.value)}
                 >
+                  <MenuItem value="">
+                    <em>Seçiniz..</em>
+                  </MenuItem>
                   {subCategories && subCategories.map((subCategory) => (
                     <MenuItem
                       key={subCategory.id}

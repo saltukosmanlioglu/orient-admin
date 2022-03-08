@@ -211,6 +211,9 @@ function UpdateProduct() {
                     label="Kategori"
                     onChange={(e) => handleFieldChange('categoryId', e.target.value)}
                   >
+                    <MenuItem value="">
+                      <em>Seçiniz..</em>
+                    </MenuItem>
                     {categories && categories.map((category) => (
                       <MenuItem
                         key={category.id}
@@ -235,6 +238,9 @@ function UpdateProduct() {
                     label="Alt kategori"
                     onChange={(e) => handleFieldChange('subCategoryId', e.target.value)}
                   >
+                    <MenuItem value="">
+                      <em>Seçiniz..</em>
+                    </MenuItem>
                     {subCategories && subCategories.map((subCategory) => (
                       <MenuItem
                         key={subCategory.id}

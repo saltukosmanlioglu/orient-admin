@@ -22,6 +22,7 @@ import Typography from '@mui/material/Typography';
 
 import category from 'app/main/services/controller/category';
 import categoryLocale from 'app/main/services/controller/category-locale';
+import language from 'app/main/services/controller/language';
 
 const Root = styled('div')(({ theme }) => ({
   '& .FaqPage-header': {
@@ -56,6 +57,7 @@ function UpdateCategory() {
   const [languageFormData, setLanguageFormData] = useState({
     title: '',
   })
+  const [languages, setLanguages] = useState([])
 
   const [confirmationModal, setConfirmationModal] = useState(false)
   const [languageModal, setLanguageModal] = useState(false)
@@ -148,6 +150,9 @@ function UpdateCategory() {
     categoryLocale.list({ categoryId: Number(params.id) })
       .then(({ data }) => setLocales(data))
       .catch((err) => console.log(err))
+    language.list()
+      .then(({ data }) => setLanguages(data))
+      .catch((err) => console.log(err))
   }, [])
 
   const renderHeader = () => {
@@ -219,12 +224,9 @@ function UpdateCategory() {
     )
   }
 
-  const languages = ['ENG', 'AR']
-
   const renderLanguageSupport = () => {
     return (
       <div className="mt-20">
-
         <Box sx={{ flexGrow: 1 }}>
           <Grid container spacing={2}>
             {languages.map((lang, index) => (
@@ -234,13 +236,16 @@ function UpdateCategory() {
                     variant="contained"
                     color="info"
                     onClick={() => {
-                      setActiveLanguage(lang)
+                      setActiveLanguage(lang.language)
                       setLanguageModal(true)
                       setLanguageModalType('update')
-                      setLanguageFormData(prev => ({ ...prev, title: locales.find((locale) => locale.locale === lang).title }))
+                      setLanguageFormData(prev => ({
+                        ...prev,
+                        title: locales.find((locale) => locale.locale === lang.language).title
+                      }))
                     }}
                   >
-                    {lang}: {locales.find((locale) => locale.locale === lang)?.title}
+                    {lang}: {locales.find((locale) => locale.locale === lang.language)?.title}
                   </Button>
                 </Grid>
               ) : (
@@ -249,13 +254,13 @@ function UpdateCategory() {
                     variant="contained"
                     color="info"
                     onClick={() => {
-                      setActiveLanguage(lang)
+                      setActiveLanguage(lang.language)
                       setLanguageModal(true)
                       setLanguageModalType('create')
                       setLanguageFormData({ title: '' })
                     }}
                   >
-                    {lang}
+                    {lang.language}
                   </Button>
                 </Grid>
               )

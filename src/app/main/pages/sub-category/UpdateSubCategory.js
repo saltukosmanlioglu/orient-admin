@@ -176,7 +176,6 @@ function UpdateSubCategory() {
               </Grid>
               <Grid item xs={6}>
                 <TextField
-                  required
                   fullWidth
                   id="outlined-basic"
                   label="Renk kodu"
