@@ -155,12 +155,16 @@ function UpdateProduct() {
     return (
       <div className="mt-20">
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }} className="mb-20">
-          <img width="50%" src={`${process.env.REACT_APP_API}file/serve/${formData.image}`} />
+          <img
+            width="50%"
+            style={{ objectFit: 'contain', height: '200px' }}
+            src={`${process.env.REACT_APP_API}file/serve/${formData.image}`}
+          />
         </div>
         <form onSubmit={handleSubmit}>
           <Box sx={{ flexGrow: 1 }}>
             <Grid container spacing={2}>
-              <Grid item xs={6}>
+              <Grid item xs={12}>
                 <TextField
                   fullWidth
                   id="outlined-basic"
@@ -197,6 +201,8 @@ function UpdateProduct() {
                 <TextField
                   required
                   fullWidth
+                  rows={3}
+                  multiline
                   id="outlined-basic"
                   label="Açıklama"
                   variant="outlined"
@@ -208,6 +214,8 @@ function UpdateProduct() {
                 <TextField
                   fullWidth
                   id="outlined-basic"
+                  rows={2}
+                  multiline
                   label="Alerjenler"
                   variant="outlined"
                   onChange={(e) => handleFieldChange('allergens', e.currentTarget.value)}

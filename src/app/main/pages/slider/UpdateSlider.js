@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useRef } from 'react'
 import Button from '@mui/material/Button';
 import ButtonGroup from '@mui/material/ButtonGroup';
 import TextField from '@mui/material/TextField';
@@ -16,6 +16,7 @@ import { styled } from '@mui/material/styles';
 import { useNavigate, useParams } from 'react-router-dom';
 import Grid from '@mui/material/Grid';
 import slider from 'app/main/services/controller/slider';
+import file from 'app/main/services/controller/file';
 import product from 'app/main/services/controller/product';
 
 const Root = styled('div')(({ theme }) => ({
@@ -52,6 +53,7 @@ function UpdateSlider() {
 
   const [confirmationModal, setConfirmationModal] = useState(false)
 
+  const uploadFileRef = useRef(null)
   const params = useParams()
   const navigate = useNavigate()
 
@@ -68,18 +70,36 @@ function UpdateSlider() {
       .catch(() => setConfirmationModal(false))
   }
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault()
-    slider.update(params.id, { ...formData })
-      .then(() => {
-        navigate('/pages/sliders')
-      })
-      .catch(error => console.log(error))
+    let multipartFormData = new FormData();
+    multipartFormData.append("uploadFile", uploadFileRef.current);
+
+    let uploaded
+    if (uploadFileRef.current) {
+      uploaded = (await file.upload(multipartFormData)).data
+    }
+
+    if (uploaded?.uploadedFilePath) {
+      slider.update(params.id, { ...formData, image: uploaded.uploadedFilePath })
+        .then(() => {
+          navigate('/pages/sliders')
+        })
+    } else {
+      slider.update(params.id, { ...formData })
+        .then(() => {
+          navigate('/pages/sliders')
+        })
+    }
   }
 
   useEffect(() => {
+    slider.getById(params.id)
+      .then(({ data }) => setFormData(data))
+      .then(error => console.log(error))
+
     product.list()
-      .then(({ data }) => console.log(data))
+      .then(({ data }) => setProducts(data))
       .then(error => console.log(error))
   }, [])
 
@@ -88,7 +108,7 @@ function UpdateSlider() {
       <React.Fragment>
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
           <Typography className="text-40 my-16 font-700" component="h1">
-            {formData.title}
+            {formData.productId}
           </Typography>
           <Button color="error" variant="contained" onClick={() => setConfirmationModal(true)}>Sil</Button>
         </div>
@@ -105,7 +125,7 @@ function UpdateSlider() {
         <Breadcrumbs aria-label="breadcrumb">
           <Button href="/">Anasayfa</Button>
           <Button href="/pages/sliders">Sliderlar</Button>
-          <Typography color="text.primary">{formData.title}</Typography>
+          <Typography color="text.primary">{formData.productId}</Typography>
         </Breadcrumbs>
       </div>
     )
@@ -117,12 +137,30 @@ function UpdateSlider() {
         {renderBreadcrumb()}
         {renderHeader()}
         <div className="mt-20">
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }} className="mb-20">
+            <img
+              width="50%"
+              style={{ objectFit: 'contain', height: '200px' }}
+              src={`${process.env.REACT_APP_API}file/serve/${formData.image}`}
+            />
+          </div>
           <form onSubmit={handleSubmit}>
             <Box sx={{ flexGrow: 1 }}>
               <Grid container spacing={2}>
                 <Grid item xs={6}>
+                  <TextField
+                    fullWidth
+                    id="outlined-basic"
+                    variant="outlined"
+                    onChange={(e) => {
+                      uploadFileRef.current = e.target.files[0]
+                    }}
+                    type="file"
+                  />
+                </Grid>
+                <Grid item xs={6}>
                   <FormControl fullWidth>
-                    <InputLabel id="demo-simple-select-helper-label">Alt kategori</InputLabel>
+                    <InputLabel id="demo-simple-select-helper-label">Ürün</InputLabel>
                     <Select
                       required
                       fullWidth

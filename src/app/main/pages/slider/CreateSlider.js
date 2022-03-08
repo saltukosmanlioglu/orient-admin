@@ -57,21 +57,27 @@ function CreateSlider() {
     setFormData({ ...formData, [key]: value })
   }
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault()
     let multipartFormData = new FormData();
     multipartFormData.append("uploadFile", uploadFileRef.current);
 
-    file.upload(multipartFormData)
-      .then(({ data }) => {
-        if (data.uploadedFilePath) {
-          slider.create({ ...formData, image: data.uploadedFilePath })
-            .then(() => {
-              navigate('/pages/sliders')
-            })
-        }
-      })
-      .catch(error => console.log(error))
+    let uploaded
+    if (uploadFileRef.current) {
+      uploaded = (await file.upload(multipartFormData)).data
+    }
+
+    if (uploaded?.uploadedFilePath) {
+      slider.create({ ...formData, image: uploaded.uploadedFilePath })
+        .then(() => {
+          navigate('/pages/sliders')
+        })
+    } else {
+      slider.create({ ...formData })
+        .then(() => {
+          navigate('/pages/sliders')
+        })
+    }
   }
 
   useEffect(() => {
@@ -123,14 +129,12 @@ function CreateSlider() {
               />
             </Grid>
             <Grid item xs={6}>
-              <FormControl fullWidth>
-                <InputLabel id="demo-simple-select-helper-label">Ürün adı</InputLabel>
+              <FormControl required fullWidth>
+                <InputLabel id="demo-simple-select-required-label">Ürün adı</InputLabel>
                 <Select
-                  required
                   fullWidth
-                  labelId="demo-simple-select-helper-label"
-                  id="demo-simple-select-helper"
-                  value={formData.productId}
+                  labelId="demo-simple-select-required-label"
+                  id="demo-simple-select-required"
                   label="Ürün adı"
                   onChange={(e) => handleFieldChange('productId', e.target.value)}
                 >

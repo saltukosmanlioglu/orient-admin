@@ -127,7 +127,7 @@ function CreateProduct() {
       <form onSubmit={handleSubmit}>
         <Box sx={{ flexGrow: 1 }}>
           <Grid container spacing={2}>
-            <Grid item xs={6}>
+            <Grid item xs={12}>
               <TextField
                 required
                 fullWidth
@@ -150,6 +150,17 @@ function CreateProduct() {
                 value={formData.title}
               />
             </Grid>
+            <Grid item xs={6}>
+              <TextField
+                required
+                fullWidth
+                id="outlined-basic"
+                label="Fiyat"
+                variant="outlined"
+                onChange={(e) => handleFieldChange('price', Number(e.currentTarget.value))}
+                value={formData.price}
+              />
+            </Grid>
             <Grid item xs={12}>
               <TextField
                 required
@@ -161,17 +172,6 @@ function CreateProduct() {
                 variant="outlined"
                 onChange={(e) => handleFieldChange('description', e.currentTarget.value)}
                 value={formData.description}
-              />
-            </Grid>
-            <Grid item xs={6}>
-              <TextField
-                required
-                fullWidth
-                id="outlined-basic"
-                label="Fiyat"
-                variant="outlined"
-                onChange={(e) => handleFieldChange('price', Number(e.currentTarget.value))}
-                value={formData.price}
               />
             </Grid>
             <Grid item xs={12}>
@@ -190,7 +190,6 @@ function CreateProduct() {
               <FormControl fullWidth>
                 <InputLabel id="demo-simple-select-helper-label">Kategori</InputLabel>
                 <Select
-                  required
                   fullWidth
                   labelId="demo-simple-select-helper-label"
                   id="demo-simple-select-helper"
