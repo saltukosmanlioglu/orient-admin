@@ -16,3 +16,6 @@ export const register = async (payload) =>
     ] = `Bearer ${response.data.token}`
     return response
   })
+
+export const accessToken = async (payload) =>
+  service.get("auth/access-token", payload)

@@ -44,6 +44,7 @@ class JwtService extends FuseUtils.EventEmitter {
     } else {
       this.setSession(null);
       this.emit('onAutoLogout', 'access_token expired');
+      console.log('2')
     }
   };
 
@@ -79,23 +80,24 @@ class JwtService extends FuseUtils.EventEmitter {
 
   signInWithToken = () => {
     return new Promise((resolve, reject) => {
-      axios
-        .get('/api/auth/access-token', {
-          data: {
-            access_token: this.getAccessToken(),
-          },
-        })
+      auth.accessToken({
+        data: {
+          access_token: this.getAccessToken(),
+        },
+      })
         .then((response) => {
-          if (response.data.user) {
+          if (response.data) {
             this.setSession(response.data.access_token);
-            resolve(response.data.user);
+            resolve(response.data);
           } else {
             this.logout();
+            console.log('a')
             reject(new Error('Failed to login with token.'));
           }
         })
         .catch((error) => {
           this.logout();
+          console.log('b')
           reject(new Error('Failed to login with token.'));
         });
     });

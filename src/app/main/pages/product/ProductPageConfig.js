@@ -1,3 +1,4 @@
+import { authRoles } from 'app/auth';
 import { lazy } from 'react';
 
 const Products = lazy(() => import('./Products'));
@@ -10,6 +11,7 @@ const ProductPageConfig = {
       config: {},
     },
   },
+  auth: authRoles.admin,
   routes: [
     {
       path: 'pages/products',

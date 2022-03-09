@@ -82,6 +82,7 @@ export const setUserData = (user) => async (dispatch, getState) => {
   if (user.loginRedirectUrl) {
     settingsConfig.loginRedirectUrl = user.loginRedirectUrl; // for example 'apps/academy'
   }
+  console.log(user, 'asdasdasdasdasd')
 
   /*
   Set User Settings

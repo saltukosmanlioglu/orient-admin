@@ -1,3 +1,4 @@
+import { authRoles } from 'app/auth';
 import { lazy } from 'react';
 
 const CreateLanguage = lazy(() => import('./CreateLanguage'));
@@ -10,6 +11,7 @@ const LanguagePageConfig = {
       config: {},
     },
   },
+  auth: authRoles.admin,
   routes: [
     {
       path: 'pages/languages',

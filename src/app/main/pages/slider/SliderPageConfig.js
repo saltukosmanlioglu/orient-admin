@@ -1,3 +1,4 @@
+import { authRoles } from 'app/auth';
 import { lazy } from 'react';
 
 const Slider = lazy(() => import('./Slider'));
@@ -10,6 +11,7 @@ const SliderPageConfig = {
       config: {},
     },
   },
+  auth: authRoles.admin,
   routes: [
     {
       path: 'pages/sliders',

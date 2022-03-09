@@ -17,6 +17,7 @@ import LanguagePageConfig from './language/LanguagePageConfig';
 import ProductPageConfig from './product/ProductPageConfig';
 import SliderPageConfig from './slider/SliderPageConfig';
 import SubCategoryPageConfig from './sub-category/SubCategoryPageConfig';
+import TablePageConfig from './table/TablePageConfig';
 
 const pagesConfigs = [
   CategoryPageConfig,
@@ -24,6 +25,7 @@ const pagesConfigs = [
   ProductPageConfig,
   SliderPageConfig,
   SubCategoryPageConfig,
+  TablePageConfig,
   
   LoginPageConfig,
   RegisterPageConfig,

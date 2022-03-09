@@ -52,6 +52,13 @@ const navigationConfig = [
         icon: 'language',
         url: 'pages/languages',
       },
+      {
+        id: 'tables',
+        title: 'Masalar',
+        type: 'item',
+        icon: 'table',
+        url: 'pages/tables',
+      },
     ],
   },
   DocumentationNavigation,

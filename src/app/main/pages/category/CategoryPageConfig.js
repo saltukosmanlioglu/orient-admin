@@ -1,4 +1,5 @@
 import { lazy } from 'react';
+import { authRoles } from 'app/auth';
 
 const Categories = lazy(() => import('./Categories'));
 const CreateCategory = lazy(() => import('./CreateCategory'));
@@ -10,6 +11,7 @@ const CategoryPageConfig = {
       config: {},
     },
   },
+  auth: authRoles.admin,
   routes: [
     {
       path: 'pages/categories',

@@ -1,3 +1,4 @@
+import { authRoles } from 'app/auth';
 import { lazy } from 'react';
 
 const CreateSubCategory = lazy(() => import('./CreateSubCategory'));
@@ -10,6 +11,7 @@ const SubCategoryPageConfig = {
       config: {},
     },
   },
+  auth: authRoles.admin,
   routes: [
     {
       path: 'pages/sub-categories',
