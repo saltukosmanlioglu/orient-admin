@@ -129,7 +129,6 @@ function CreateProduct() {
           <Grid container spacing={2}>
             <Grid item xs={12}>
               <TextField
-                required
                 fullWidth
                 id="outlined-basic"
                 variant="outlined"
@@ -152,7 +151,6 @@ function CreateProduct() {
             </Grid>
             <Grid item xs={6}>
               <TextField
-                required
                 fullWidth
                 id="outlined-basic"
                 label="Fiyat"
@@ -163,7 +161,6 @@ function CreateProduct() {
             </Grid>
             <Grid item xs={12}>
               <TextField
-                required
                 fullWidth
                 rows={3}
                 multiline

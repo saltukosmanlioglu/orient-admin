@@ -188,7 +188,6 @@ function UpdateProduct() {
               </Grid>
               <Grid item xs={6}>
                 <TextField
-                  required
                   fullWidth
                   id="outlined-basic"
                   label="Fiyat"
@@ -199,7 +198,6 @@ function UpdateProduct() {
               </Grid>
               <Grid item xs={12}>
                 <TextField
-                  required
                   fullWidth
                   rows={3}
                   multiline
@@ -226,7 +224,6 @@ function UpdateProduct() {
                 <FormControl fullWidth>
                   <InputLabel id="demo-simple-select-helper-label">Kategori</InputLabel>
                   <Select
-                    required
                     fullWidth
                     labelId="demo-simple-select-helper-label"
                     id="demo-simple-select-helper"
