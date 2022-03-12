@@ -50,7 +50,7 @@ function CreateProduct() {
     categoryId: 0,
     description: '',
     image: '',
-    price: 0,
+    price: '',
     subCategoryId: undefined,
     title: '',
   })
@@ -155,7 +155,7 @@ function CreateProduct() {
                 id="outlined-basic"
                 label="Fiyat"
                 variant="outlined"
-                onChange={(e) => handleFieldChange('price', Number(e.currentTarget.value))}
+                onChange={(e) => handleFieldChange('price', e.currentTarget.value)}
                 value={formData.price}
               />
             </Grid>
@@ -194,7 +194,7 @@ function CreateProduct() {
                   label="Kategori"
                   onChange={(e) => handleFieldChange('categoryId', e.target.value)}
                 >
-                  <MenuItem value="">
+                  <MenuItem value={undefined}>
                     <em>Seçiniz..</em>
                   </MenuItem>
                   {categories && categories.map((category) => (
@@ -220,7 +220,7 @@ function CreateProduct() {
                   label="Alt kategori"
                   onChange={(e) => handleFieldChange('subCategoryId', e.target.value)}
                 >
-                  <MenuItem value="">
+                  <MenuItem value={undefined}>
                     <em>Seçiniz..</em>
                   </MenuItem>
                   {subCategories && subCategories.map((subCategory) => (

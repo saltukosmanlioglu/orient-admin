@@ -46,12 +46,10 @@ const Root = styled('div')(({ theme }) => ({
 function Products() {
   const [products, setProducts] = useState()
 
-  const [title, setTitle] = useState('')
-
   useEffect(() => {
     product.list()
-    .then(({ data }) => setProducts(data))
-    .catch(error => console.log(error))
+      .then(({ data }) => setProducts(data))
+      .catch(error => console.log(error))
   }, [])
 
   const renderHeader = () => {
@@ -101,10 +99,10 @@ function Products() {
             {products?.map((product) => (
               <TableRow key={product.id} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
                 <TableCell><b>{product.title}</b></TableCell>
-                <TableCell>{product.description.substring(0, 40)}</TableCell>
-                <TableCell>{product.allergens.substring(0, 40) || "Yok"}</TableCell>
-                <TableCell>{product.categoryId}</TableCell>
-                <TableCell>{product.subCategoryId || 'Yok'}</TableCell>
+                <TableCell>{product.description.length > 40 ? `${product.description.substring(0, 40)}..` : `${product.description}`}</TableCell>
+                <TableCell>{product.allergens.substring(0, 40) || "-"}</TableCell>
+                <TableCell>{product?.category?.title}</TableCell>
+                <TableCell>{product?.subCategory?.title || '-'}</TableCell>
                 <TableCell>{product.price}</TableCell>
                 <TableCell>{new Date(product.createdAt).toLocaleString()}</TableCell>
                 <TableCell>

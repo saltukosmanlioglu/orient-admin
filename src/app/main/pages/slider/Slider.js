@@ -92,7 +92,7 @@ function Slider() {
           <TableBody>
             {sliders?.map((slider) => (
               <TableRow key={slider.id} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
-                <TableCell><b>{slider.productId}</b></TableCell>
+                <TableCell><b>{slider?.product?.title}</b></TableCell>
                 <TableCell>{new Date(slider.createdAt).toLocaleString()}</TableCell>
                 <TableCell>
                   <Button href={`/pages/slider/${slider.id}`} color="primary">İncele</Button>

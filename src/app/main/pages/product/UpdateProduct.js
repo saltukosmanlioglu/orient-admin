@@ -58,7 +58,7 @@ function UpdateProduct() {
     categoryId: 0,
     description: '',
     image: '',
-    price: 0,
+    price: '',
     subCategoryId: 0,
     title: '',
   })

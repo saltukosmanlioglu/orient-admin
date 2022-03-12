@@ -1,23 +1,15 @@
 import * as React from 'react';
 import { useEffect, useState } from 'react'
 import { styled } from '@mui/material/styles';
-import Box from '@mui/material/Box';
 import Breadcrumbs from '@mui/material/Breadcrumbs';
 import Button from '@mui/material/Button';
-import ButtonGroup from '@mui/material/ButtonGroup';
-import FormControl from '@mui/material/FormControl';
-import Grid from '@mui/material/Grid';
-import InputLabel from '@mui/material/InputLabel';
-import MenuItem from '@mui/material/MenuItem';
 import Paper from '@mui/material/Paper';
-import Select from '@mui/material/Select';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
 import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
-import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
 
 import category from 'app/main/services/controller/category';
@@ -107,7 +99,7 @@ function SubCategories() {
               <TableRow key={subCategory.id} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
                 <TableCell style={{ color: subCategory.color }}><b>{subCategory.title}</b></TableCell>
                 <TableCell>{subCategory.color}</TableCell>
-                <TableCell>{subCategory.categoryId}</TableCell>
+                <TableCell>{subCategory.category.title}</TableCell>
                 <TableCell>{new Date(subCategory.createdAt).toLocaleString()}</TableCell>
                 <TableCell>
                   <Button href={`/pages/sub-category/${subCategory.id}`} color="primary">İncele</Button>
