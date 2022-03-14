@@ -14,6 +14,13 @@ import Button from '@mui/material/Button';
 import ButtonGroup from '@mui/material/ButtonGroup';
 import FormControl from '@mui/material/FormControl';
 import Grid from '@mui/material/Grid';
+import Paper from '@mui/material/Paper';
+import Table from '@mui/material/Table';
+import TableBody from '@mui/material/TableBody';
+import TableCell from '@mui/material/TableCell';
+import TableContainer from '@mui/material/TableContainer';
+import TableHead from '@mui/material/TableHead';
+import TableRow from '@mui/material/TableRow';
 import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import Modal from '@mui/material/Modal';
@@ -26,6 +33,8 @@ import Typography from '@mui/material/Typography';
 
 import category from 'app/main/services/controller/category';
 import subCategory from 'app/main/services/controller/sub-category';
+import subCategoryLocale from 'app/main/services/controller/sub-category-locale';
+import language from 'app/main/services/controller/language';
 
 const Root = styled('div')(({ theme }) => ({
   '& .FaqPage-header': {
@@ -58,10 +67,20 @@ function UpdateSubCategory() {
     color: '',
     title: '',
   })
+  const [languageFormData, setLanguageFormData] = useState({
+    id: 0,
+    title: '',
+  })
+  const [languages, setLanguages] = useState([])
+  const [locales, setLocales] = useState([])
 
   const [categories, setCategories] = useState()
 
   const [value, setValue] = useState('1');
+  const [activeLanguage, setActiveLanguage] = useState('')
+  const [languageModal, setLanguageModal] = useState(false)
+  const [languageModalType, setLanguageModalType] = useState('')
+
   const [confirmationModal, setConfirmationModal] = useState(false)
   const [error, setError] = useState(false)
 
@@ -70,6 +89,10 @@ function UpdateSubCategory() {
 
   const handleFieldChange = (key, value) => {
     setFormData({ ...formData, [key]: value })
+  }
+
+  const handleLangFieldChange = (key, value) => {
+    setLanguageFormData({ ...languageFormData, [key]: value })
   }
 
   const handleDelete = () => {
@@ -96,13 +119,66 @@ function UpdateSubCategory() {
       })
   }
 
+  const handleUpdateLangSubmit = (e) => {
+    subCategoryLocale.update(languageFormData.id, {
+      ...languageFormData,
+      subCategoryId: Number(params.id),
+      locale: activeLanguage
+    })
+      .then(() => {
+        setLanguageFormData({ title: '' })
+        setLanguageModal(false)
+        subCategoryLocale.list({ subCategoryId: Number(params.id) })
+          .then(({ data }) => {
+            setLocales(data)
+          })
+          .catch((err) => console.log(err))
+      })
+      .catch(error => {
+        console.log(error)
+        setLanguageModal(false)
+        setError(true)
+      })
+  }
+
+  const handleLangSubmit = (e) => {
+    subCategoryLocale.create({
+      ...languageFormData,
+      subCategoryId: Number(params.id),
+      locale: activeLanguage
+    })
+      .then(() => {
+        setLanguageFormData({ title: '' })
+        setLanguageModal(false)
+        subCategoryLocale.list({ subCategoryId: Number(params.id) })
+          .then(({ data }) => {
+            setLocales(data)
+          })
+          .catch((err) => console.log(err))
+      })
+      .catch(error => {
+        console.log(error)
+        setLanguageModal(false)
+        setError(true)
+      })
+  }
+
   useEffect(() => {
     category.list()
       .then(({ data }) => setCategories(data))
       .catch(error => console.log(error))
+
     subCategory.getById(params.id)
       .then(({ data }) => { setFormData(data) })
       .catch(error => console.log(error))
+
+    subCategoryLocale.list({ subCategoryId: Number(params.id) })
+      .then(({ data }) => setLocales(data))
+      .catch((err) => console.log(err))
+
+    language.list()
+      .then(({ data }) => setLanguages(data))
+      .catch((err) => console.log(err))
   }, [])
 
   const renderHeader = () => {
@@ -199,7 +275,68 @@ function UpdateSubCategory() {
 
   const renderLanguageSupport = () => {
     return (
-      <div>sa</div>
+      <div className="mt-20">
+        <TableContainer component={Paper}>
+          <Table sx={{ minWidth: 650 }} aria-label="simple table">
+            <TableHead>
+              <TableRow>
+                <TableCell>Dil kodu</TableCell>
+                <TableCell>Alt kategori adı</TableCell>
+                <TableCell>İşlemler</TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {languages.map((lang, index) => (
+                locales.find((locale) => locale.locale === lang.language) ? (
+                  <TableRow key={index} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
+                    <TableCell>{lang.language}</TableCell>
+                    <TableCell>{locales.find((locale) => locale.locale === lang.language)?.title}</TableCell>
+                    <TableCell>
+                      <Button
+                        variant="contained"
+                        color="info"
+                        onClick={() => {
+                          setActiveLanguage(lang.language)
+                          setLanguageModal(true)
+                          setLanguageModalType('update')
+                          setLanguageFormData(prev => ({
+                            ...prev,
+                            id: lang.id,
+                            title: locales.find((locale) => locale.locale === lang.language).title
+                          }))
+                        }}
+                      >
+                        Güncelle
+                      </Button>
+                    </TableCell>
+                  </TableRow>
+                ) : (
+                  <TableRow key={index} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
+                    <TableCell>Oluşturulmadı</TableCell>
+                    <TableCell>
+                      <Button
+                        variant="contained"
+                        color="info"
+                        onClick={() => {
+                          setActiveLanguage(lang.language)
+                          setLanguageModal(true)
+                          setLanguageModalType('create')
+                          setLanguageFormData(prev => ({
+                            ...prev,
+                            title: ''
+                          }))
+                        }}
+                      >
+                        Ekle
+                      </Button>
+                    </TableCell>
+                  </TableRow>
+                )
+              ))}
+            </TableBody>
+          </Table>
+        </TableContainer>
+      </div>
     )
   }
 
@@ -232,38 +369,89 @@ function UpdateSubCategory() {
           {renderHeader()}
           {renderTab()}
         </div>
-        <Modal
-          open={confirmationModal}
-          onClose={() => setConfirmationModal(false)}
-          aria-labelledby="modal-modal-title"
-          aria-describedby="modal-modal-description"
-        >
-          <Box sx={{
-            position: 'absolute',
-            top: '50%',
-            left: '50%',
-            transform: 'translate(-50%, -50%)',
-            width: 400,
-            bgcolor: 'background.paper',
-            border: '2px solid #000',
-            boxShadow: 24,
-            p: 4,
-          }}>
-            <Typography id="modal-modal-title" variant="h6" component="h2">
-              Alt kategori sil
-            </Typography>
-            <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-              Geçerli alt kategoriyi silmek istediğinizden emin misiniz ?
-            </Typography>
-            <div className="mt-16" style={{ width: '100%', display: 'flex', alignItems: 'center', justifyContent: 'flex-end' }}>
-              <ButtonGroup>
-                <Button color="error" variant="contained" onClick={handleDelete}>Sil</Button>
-                <Button color="inherit" variant="contained" onClick={() => setConfirmationModal(false)}>İptal</Button>
-              </ButtonGroup>
-            </div>
-          </Box>
-        </Modal>
       </Root>
+      <Modal
+        open={confirmationModal}
+        onClose={() => setConfirmationModal(false)}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description"
+      >
+        <Box sx={{
+          position: 'absolute',
+          top: '50%',
+          left: '50%',
+          transform: 'translate(-50%, -50%)',
+          width: 400,
+          bgcolor: 'background.paper',
+          border: '2px solid #000',
+          boxShadow: 24,
+          p: 4,
+        }}>
+          <Typography id="modal-modal-title" variant="h6" component="h2">
+            Alt kategori sil
+          </Typography>
+          <Typography id="modal-modal-description" sx={{ mt: 2 }}>
+            Geçerli alt kategoriyi silmek istediğinizden emin misiniz ?
+          </Typography>
+          <div className="mt-16" style={{ width: '100%', display: 'flex', alignItems: 'center', justifyContent: 'flex-end' }}>
+            <ButtonGroup>
+              <Button color="error" variant="contained" onClick={handleDelete}>Sil</Button>
+              <Button color="inherit" variant="contained" onClick={() => setConfirmationModal(false)}>İptal</Button>
+            </ButtonGroup>
+          </div>
+        </Box>
+      </Modal>
+      <Modal
+        open={languageModal}
+        onClose={() => setLanguageModal(false)}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description"
+      >
+        <Box sx={{
+          position: 'absolute',
+          top: '50%',
+          left: '50%',
+          transform: 'translate(-50%, -50%)',
+          width: 400,
+          bgcolor: 'background.paper',
+          border: '2px solid #000',
+          boxShadow: 24,
+          p: 4,
+        }}>
+          <Typography id="modal-modal-title" variant="h6" component="h2">
+            {activeLanguage} Dil desteği {languageModalType === 'update' ? 'güncelle' : 'ekle'}
+          </Typography>
+          <Box className='mt-20' sx={{ flexGrow: 1 }}>
+            <Grid container spacing={2}>
+              <Grid item xs={12}>
+                <TextField
+                  required
+                  fullWidth
+                  id="outlined-basic"
+                  label="Kategori adı"
+                  variant="outlined"
+                  onChange={(e) => handleLangFieldChange('title', e.currentTarget.value)}
+                  value={languageFormData.title}
+                />
+              </Grid>
+            </Grid>
+          </Box>
+          <div className='mt-20' style={{ width: '100%', display: 'flex', alignItems: 'center', justifyContent: 'flex-end' }}>
+            <Stack spacing={2} direction="row">
+              <Button
+                type="button"
+                color="info"
+                variant="contained"
+                onClick={() => languageModalType === 'create'
+                  ? handleLangSubmit()
+                  : handleUpdateLangSubmit()
+                }
+              > {languageModalType === 'update' ? 'Güncelle' : 'Ekle'}</Button>
+              <Button onClick={() => setLanguageModal(false)} color="inherit">İptal</Button>
+            </Stack>
+          </div>
+        </Box>
+      </Modal>
       <Snackbar style={{ width: '25%', margin: '0 30px 30px auto', position: 'static', }} open={error} autoHideDuration={3000} onClose={() => setError(false)}>
         <Alert onClose={() => setError(false)} severity="error" sx={{ width: '100%' }}>
           İşlem gerçekleşmedi

@@ -244,53 +244,55 @@ function UpdateCategory() {
                 <TableCell>İşlemler</TableCell>
               </TableRow>
             </TableHead>
-            {languages.map((lang, index) => (
-              locales.find((locale) => locale.locale === lang.language) ? (
-                <TableRow key={index} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
-                  <TableCell>{lang.language}</TableCell>
-                  <TableCell>{locales.find((locale) => locale.locale === lang.language)?.title}</TableCell>
-                  <TableCell>
-                    <Button
-                      variant="contained"
-                      color="info"
-                      onClick={() => {
-                        setActiveLanguage(lang.language)
-                        setLanguageModal(true)
-                        setLanguageModalType('update')
-                        setLanguageFormData(prev => ({
-                          ...prev,
-                          id: lang.id,
-                          title: locales.find((locale) => locale.locale === lang.language).title
-                        }))
-                      }}
-                    >
-                      Güncelle
-                    </Button>
-                  </TableCell>
-                </TableRow>
-              ) : (
-                <TableRow key={index} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
-                  <TableCell>Oluşturulmadı</TableCell>
-                  <TableCell>
-                    <Button
-                      variant="contained"
-                      color="info"
-                      onClick={() => {
-                        setActiveLanguage(lang.language)
-                        setLanguageModal(true)
-                        setLanguageModalType('create')
-                        setLanguageFormData(prev => ({
-                          ...prev,
-                          title: ''
-                        }))
-                      }}
-                    >
-                      Ekle
-                    </Button>
-                  </TableCell>
-                </TableRow>
-              )
-            ))}
+            <TableBody>
+              {languages.map((lang, index) => (
+                locales.find((locale) => locale.locale === lang.language) ? (
+                  <TableRow key={index} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
+                    <TableCell>{lang.language}</TableCell>
+                    <TableCell>{locales.find((locale) => locale.locale === lang.language)?.title}</TableCell>
+                    <TableCell>
+                      <Button
+                        variant="contained"
+                        color="info"
+                        onClick={() => {
+                          setActiveLanguage(lang.language)
+                          setLanguageModal(true)
+                          setLanguageModalType('update')
+                          setLanguageFormData(prev => ({
+                            ...prev,
+                            id: lang.id,
+                            title: locales.find((locale) => locale.locale === lang.language).title
+                          }))
+                        }}
+                      >
+                        Güncelle
+                      </Button>
+                    </TableCell>
+                  </TableRow>
+                ) : (
+                  <TableRow key={index} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
+                    <TableCell>Oluşturulmadı</TableCell>
+                    <TableCell>
+                      <Button
+                        variant="contained"
+                        color="info"
+                        onClick={() => {
+                          setActiveLanguage(lang.language)
+                          setLanguageModal(true)
+                          setLanguageModalType('create')
+                          setLanguageFormData(prev => ({
+                            ...prev,
+                            title: ''
+                          }))
+                        }}
+                      >
+                        Ekle
+                      </Button>
+                    </TableCell>
+                  </TableRow>
+                )
+              ))}
+            </TableBody>
           </Table>
         </TableContainer>
       </div>
