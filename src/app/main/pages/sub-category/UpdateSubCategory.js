@@ -99,7 +99,7 @@ function UpdateSubCategory() {
     subCategory.destroy(params.id)
       .then(() => {
         setConfirmationModal(false)
-        navigate('/pages/sub-categories')
+        navigate(-1)
       })
       .catch(() => {
         setError(true)
@@ -111,7 +111,7 @@ function UpdateSubCategory() {
     e.preventDefault()
     subCategory.update(params.id, { ...formData })
       .then(() => {
-        navigate('/pages/sub-categories')
+        navigate(-1)
       })
       .catch(error => {
         setError(true)
@@ -265,7 +265,7 @@ function UpdateSubCategory() {
           <div className='mt-20' style={{ width: '100%', display: 'flex', alignItems: 'center', justifyContent: 'flex-end' }}>
             <Stack spacing={2} direction="row">
               <Button type="submit" color="info" variant="contained">Güncelle</Button>
-              <Button href="/pages/sub-categories" color="inherit">İptal</Button>
+              <Button onClick={() => navigate(-1)} color="inherit">İptal</Button>
             </Stack>
           </div>
         </form>

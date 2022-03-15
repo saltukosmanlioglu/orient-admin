@@ -22,7 +22,7 @@ const SubCategoryPageConfig = {
       element: <UpdateSubCategory />,
     },
     {
-      path: 'pages/sub-category/create',
+      path: 'pages/sub-category/create/:categoryId',
       element: <CreateSubCategory />,
     },
   ],

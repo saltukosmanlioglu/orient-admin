@@ -25,13 +25,6 @@ const navigationConfig = [
         url: 'pages/categories',
       },
       {
-        id: 'sub-categories',
-        title: 'Alt kategoriler',
-        type: 'item',
-        icon: 'category',
-        url: 'pages/sub-categories',
-      },
-      {
         id: 'products',
         title: 'Ürünler',
         type: 'item',

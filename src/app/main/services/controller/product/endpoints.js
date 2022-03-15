@@ -21,3 +21,6 @@ export const getById = (id) =>
 
 export const list = (params) =>
   service.get(`product`, { params })
+
+export const reorder = (payload) =>
+  service.post("product/reorder", payload)

@@ -14,3 +14,6 @@ export const getById = (id) =>
 
 export const list = (params) =>
   service.get(`sub-category`, { params })
+
+export const reorder = (payload) =>
+  service.post("sub-category/reorder", payload)

@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { useState, useCallback, useEffect } from 'react'
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { styled } from '@mui/material/styles';
 import Box from '@mui/material/Box';
 import Breadcrumbs from '@mui/material/Breadcrumbs';
@@ -54,6 +54,7 @@ function CreateSubCategory() {
   const [categories, setCategories] = useState()
 
   const [error, setError] = useState(false)
+  const params = useParams()
 
   const navigate = useNavigate()
 
@@ -63,10 +64,11 @@ function CreateSubCategory() {
 
   const handleSubmit = (e) => {
     e.preventDefault()
-    subCategory.create({ ...formData })
-      .then(() => {
-        navigate('/pages/sub-categories')
-      })
+    subCategory.create({
+      ...formData,
+      categoryId: Number(params.categoryId)
+    })
+      .then(() => navigate(-1))
       .catch(error => {
         setError(true)
         console.log(error)
@@ -121,30 +123,6 @@ function CreateSubCategory() {
               />
             </Grid>
             <Grid item xs={6}>
-              <FormControl required fullWidth>
-                <InputLabel id="demo-simple-select-helper-label">Kategori</InputLabel>
-                <Select
-                  required
-                  fullWidth
-                  labelId="demo-simple-select-helper-label"
-                  id="demo-simple-select-helper"
-                  value={formData.categoryId}
-                  label="Kategori"
-                  onChange={(e) => handleFieldChange('categoryId', e.target.value)}
-                >
-                  {categories && categories.map((category) => (
-                    <MenuItem
-                      key={category.id}
-                      value={category.id}
-                      style={{ color: category.color }}
-                    >
-                      {category.title}
-                    </MenuItem>
-                  ))}
-                </Select>
-              </FormControl>
-            </Grid>
-            <Grid item xs={6}>
               <TextField
                 fullWidth
                 id="outlined-basic"
@@ -159,7 +137,7 @@ function CreateSubCategory() {
         <div className='mt-20' style={{ width: '100%', display: 'flex', alignItems: 'center', justifyContent: 'flex-end' }}>
           <Stack spacing={2} direction="row">
             <Button type="submit" color="info" variant="contained">Alt kategori oluştur</Button>
-            <Button href="/pages/sub-categories" color="inherit">İptal</Button>
+            <Button onClick={() => navigate(-1)} color="inherit">İptal</Button>
           </Stack>
         </div>
       </form>
