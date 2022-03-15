@@ -68,7 +68,7 @@ function UpdateProduct() {
     description: '',
     image: '',
     price: '',
-    subCategoryId: 0,
+    subCategoryId: undefined,
     title: '',
   })
   const [languageFormData, setLanguageFormData] = useState({
