@@ -405,7 +405,7 @@ function UpdateCategory() {
           className='mb-20 float-right'
           color="info"
           variant="contained"
-          href='/pages/product/create'
+          href={`/pages/product/create/${Number(params.id)}/0`}
         >
           Ürün oluştur
         </Button>
@@ -450,7 +450,7 @@ function UpdateCategory() {
                       Yukarı Taşı
                     </Button>
                     <Button
-                      disabled={product.length - 1 === index}
+                      disabled={products.length - 1 === index}
                       onClick={() =>
                         handleMove(
                           'down',

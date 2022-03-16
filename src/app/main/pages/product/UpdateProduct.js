@@ -105,7 +105,7 @@ function UpdateProduct() {
     product.destroy(params.id)
       .then(() => {
         setConfirmationModal(false)
-        navigate('/pages/products')
+        navigate(-1)
       })
       .catch(() => setConfirmationModal(false))
   }
@@ -123,12 +123,12 @@ function UpdateProduct() {
     if (uploaded?.uploadedFilePath) {
       product.update(params.id, { ...formData, image: uploaded.uploadedFilePath })
         .then(() => {
-          navigate('/pages/products')
+          navigate(-1)
         })
     } else {
       product.update(params.id, { ...formData })
         .then(() => {
-          navigate('/pages/products')
+          navigate(-1)
         })
     }
   }
@@ -220,7 +220,7 @@ function UpdateProduct() {
       <div role="presentation">
         <Breadcrumbs aria-label="breadcrumb">
           <Button href="/">Anasayfa</Button>
-          <Button href="/pages/products">Ürünler</Button>
+          <Button onClick={() => navigate(-1)}>Ürünler</Button>
           <Typography color="text.primary">{formData.title}</Typography>
         </Breadcrumbs>
       </div>
@@ -353,7 +353,7 @@ function UpdateProduct() {
           <div className='mt-20' style={{ width: '100%', display: 'flex', alignItems: 'center', justifyContent: 'flex-end' }}>
             <Stack spacing={2} direction="row">
               <Button type="submit" color="info" variant="contained">Güncelle</Button>
-              <Button href="/pages/products" color="inherit">İptal</Button>
+              <Button onClick={() => navigate(-1)} color="inherit">İptal</Button>
             </Stack>
           </div>
         </form>

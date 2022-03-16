@@ -25,13 +25,6 @@ const navigationConfig = [
         url: 'pages/categories',
       },
       {
-        id: 'products',
-        title: 'Ürünler',
-        type: 'item',
-        icon: 'restaurant-menu',
-        url: 'pages/products',
-      },
-      {
         id: 'sliders',
         title: 'Slider',
         type: 'item',

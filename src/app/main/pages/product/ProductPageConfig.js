@@ -22,7 +22,7 @@ const ProductPageConfig = {
       element: <UpdateProduct />,
     },
     {
-      path: 'pages/product/create',
+      path: 'pages/product/create/:categoryId/:subCategoryId',
       element: <CreateProduct />,
     },
   ],

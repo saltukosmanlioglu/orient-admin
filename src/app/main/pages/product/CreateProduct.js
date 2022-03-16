@@ -78,12 +78,12 @@ function CreateProduct() {
     if (uploaded?.uploadedFilePath) {
       product.create({ ...formData, image: uploaded.uploadedFilePath })
         .then(() => {
-          navigate('/pages/products')
+          navigate(-1)
         })
     } else {
       product.create({ ...formData })
         .then(() => {
-          navigate('/pages/products')
+          navigate(-1)
         })
     }
   }
@@ -115,7 +115,7 @@ function CreateProduct() {
       <div role="presentation">
         <Breadcrumbs aria-label="breadcrumb">
           <Button color="inherit" href="/">Anasayfa</Button>
-          <Button color="inherit" href="/pages/products">Ürünler</Button>
+          <Button color="inherit" onClick={() => navigate(-1)}>Ürünler</Button>
           <Typography color="text.primary">Ürün oluştur</Typography>
         </Breadcrumbs>
       </div>
@@ -240,7 +240,7 @@ function CreateProduct() {
         <div className='mt-20' style={{ width: '100%', display: 'flex', alignItems: 'center', justifyContent: 'flex-end' }}>
           <Stack spacing={2} direction="row">
             <Button type="submit" color="info" variant="contained">Ürün oluştur</Button>
-            <Button href="/pages/products" color="inherit">İptal</Button>
+            <Button onClick={() => navigate(-1)} color="inherit">İptal</Button>
           </Stack>
         </div>
       </form>
