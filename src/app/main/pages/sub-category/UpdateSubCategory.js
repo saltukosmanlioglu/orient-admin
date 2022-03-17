@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useCallback } from 'react'
 import { styled } from '@mui/material/styles';
 import { useNavigate, useParams } from 'react-router-dom';
 import Box from '@mui/material/Box';
@@ -35,6 +35,7 @@ import category from 'app/main/services/controller/category';
 import subCategory from 'app/main/services/controller/sub-category';
 import subCategoryLocale from 'app/main/services/controller/sub-category-locale';
 import language from 'app/main/services/controller/language';
+import product from 'app/main/services/controller/product';
 
 const Root = styled('div')(({ theme }) => ({
   '& .FaqPage-header': {
@@ -78,6 +79,7 @@ function UpdateSubCategory() {
 
   const [value, setValue] = useState('1');
   const [activeLanguage, setActiveLanguage] = useState('')
+  const [products, setProducts] = useState()
   const [languageModal, setLanguageModal] = useState(false)
   const [languageModalType, setLanguageModalType] = useState('')
 
@@ -179,7 +181,32 @@ function UpdateSubCategory() {
     language.list()
       .then(({ data }) => setLanguages(data))
       .catch((err) => console.log(err))
+
+    product.list({ subCategoryId: Number(params.id) })
+      .then(({ data }) => setProducts(data))
+      .catch((err) => console.log(err))
   }, [])
+
+
+  const handleMove = useCallback(
+    (direction, item, list, setter, serviceMethod) => {
+      const index = list.indexOf(item)
+      const before = list[index - 1]
+      const next = list[index + 1]
+      const newList = list.slice()
+      if (direction === 'up') {
+        newList[index] = before
+        newList[index - 1] = item
+      } else if (direction === 'down') {
+        newList[index] = next
+        newList[index + 1] = item
+      }
+      setter(newList)
+
+      serviceMethod(newList.map((i, index) => ({ id: i.id, order: index })))
+    },
+    []
+  )
 
   const renderHeader = () => {
     return (
@@ -346,6 +373,82 @@ function UpdateSubCategory() {
     )
   }
 
+
+  const renderProducts = () => {
+    return (
+      <React.Fragment>
+        <Button
+          className='mb-20 float-right'
+          color="info"
+          variant="contained"
+          href={`/pages/product/create/0/${Number(params.id)}`}
+        >
+          Ürün oluştur
+        </Button>
+        <TableContainer component={Paper}>
+          <Table sx={{ minWidth: 650 }} aria-label="simple table">
+            <TableHead>
+              <TableRow>
+                <TableCell>Ürün adı</TableCell>
+                <TableCell>Ürün açıklaması</TableCell>
+                <TableCell>Alerjenler</TableCell>
+                <TableCell>Bağlı olduğu kategori</TableCell>
+                <TableCell>Bağlı olduğu alt kategori</TableCell>
+                <TableCell>Ürün fiyatı</TableCell>
+                <TableCell>Oluşturulma tarihi</TableCell>
+                <TableCell>İşlemler</TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {products?.map((product, index) => (
+                <TableRow key={product.id} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
+                  <TableCell><b>{product.title}</b></TableCell>
+                  <TableCell>{product.description.length > 40 ? `${product.description.substring(0, 40)}..` : `${product.description}`}</TableCell>
+                  <TableCell>{product.allergens.substring(0, 40) || "-"}</TableCell>
+                  <TableCell>{product?.category?.title}</TableCell>
+                  <TableCell>{product?.subCategory?.title || '-'}</TableCell>
+                  <TableCell>{product.price}</TableCell>
+                  <TableCell>{new Date(product.createdAt).toLocaleString()}</TableCell>
+                  <TableCell>
+                    <Button href={`/pages/product/${product.id}`} color="primary">İncele</Button>
+                    <Button
+                      disabled={index === 0}
+                      onClick={() =>
+                        handleMove(
+                          'up',
+                          product,
+                          products,
+                          setProducts,
+                          productService.reorder
+                        )
+                      }
+                    >
+                      Yukarı Taşı
+                    </Button>
+                    <Button
+                      disabled={products.length - 1 === index}
+                      onClick={() =>
+                        handleMove(
+                          'down',
+                          product,
+                          products,
+                          setProducts,
+                          productService.reorder
+                        )
+                      }
+                    >
+                      Aşağı Taşı
+                    </Button>
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </TableContainer>
+      </React.Fragment>
+    )
+  }
+
   const renderTab = () => {
     return (
       <Box sx={{ width: '100%', typography: 'body1' }}>
@@ -353,11 +456,13 @@ function UpdateSubCategory() {
           <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
             <TabList onChange={(e, i) => setValue(i)}>
               <Tab icon={<InfoIcon />} iconPosition="start" label="Bilgiler" value="1" />
-              <Tab icon={<GTranslateIcon />} iconPosition="start" label="Dil desteği" value="2" />
+              <Tab icon={<GTranslateIcon />} iconPosition="start" label="Ürünler" value="2" />
+              <Tab icon={<GTranslateIcon />} iconPosition="start" label="Dil desteği" value="3" />
             </TabList>
           </Box>
           <TabPanel value="1">{renderForm()}</TabPanel>
-          <TabPanel value="2">{renderLanguageSupport()}</TabPanel>
+          <TabPanel value="2">{renderProducts()}</TabPanel>
+          <TabPanel value="3">{renderLanguageSupport()}</TabPanel>
         </TabContext>
       </Box>
     )

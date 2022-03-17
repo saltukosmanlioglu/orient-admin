@@ -1,16 +1,12 @@
 import * as React from 'react';
-import { useState, useEffect, useRef } from 'react'
+import { useState, useRef } from 'react'
 import { useNavigate, useParams } from 'react-router-dom';
 import { styled } from '@mui/material/styles';
 import Box from '@mui/material/Box';
 import Breadcrumbs from '@mui/material/Breadcrumbs';
 import Button from '@mui/material/Button';
-import FormControl from '@mui/material/FormControl';
 import Grid from '@mui/material/Grid';
-import InputLabel from '@mui/material/InputLabel';
-import MenuItem from '@mui/material/MenuItem';
 import product from 'app/main/services/controller/product';
-import Select from '@mui/material/Select';
 import Stack from '@mui/material/Stack';
 import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
@@ -43,17 +39,20 @@ const Root = styled('div')(({ theme }) => ({
 }));
 
 function CreateProduct() {
+  const params = useParams()
+
   const [formData, setFormData] = useState({
     allergens: '',
     description: '',
     image: '',
     price: '',
     title: '',
+    ...Number(params.categoryId) ? { categoryId: Number(params.categoryId) } : {},
+    ...Number(params.subCategoryId) ? { subCategoryId: Number(params.subCategoryId) } : {},
   })
 
   const uploadFileRef = useRef(null)
   const navigate = useNavigate()
-  const params = useParams()
 
   const handleFieldChange = (key, value) => {
     setFormData({ ...formData, [key]: value })
@@ -72,8 +71,6 @@ function CreateProduct() {
     if (uploaded?.uploadedFilePath) {
       product.create({
         ...formData,
-        categoryId: params.categoryId,
-        subCategoryId: params.subCategoryId,
         image: uploaded.uploadedFilePath
       })
         .then(() => {

@@ -68,7 +68,7 @@ function UpdateProduct() {
     description: '',
     image: '',
     price: '',
-    subCategoryId: undefined,
+    subCategoryId: 0,
     title: '',
   })
   const [languageFormData, setLanguageFormData] = useState({
@@ -307,7 +307,7 @@ function UpdateProduct() {
                     label="Kategori"
                     onChange={(e) => handleFieldChange('categoryId', e.target.value)}
                   >
-                    <MenuItem value={undefined}>
+                    <MenuItem value={0}>
                       <em>Seçiniz..</em>
                     </MenuItem>
                     {categories && categories.map((category) => (
@@ -333,7 +333,7 @@ function UpdateProduct() {
                     label="Alt kategori"
                     onChange={(e) => handleFieldChange('subCategoryId', e.target.value)}
                   >
-                    <MenuItem value={undefined}>
+                    <MenuItem value={0}>
                       <em>Seçiniz..</em>
                     </MenuItem>
                     {subCategories && subCategories.map((subCategory) => (
