@@ -101,6 +101,15 @@ function UpdateCategory() {
       })
   }
 
+  const handleLangDelete = (id) => {
+    categoryLocale.destroy(id)
+      .then(() => console.log('veri silindi'))
+      .catch(() => {
+        setError(true)
+        setConfirmationModal(false)
+      })
+  }
+
   const handleSubmit = (e) => {
     e.preventDefault()
     category.update(params.id, { ...formData })
@@ -281,26 +290,32 @@ function UpdateCategory() {
                     <TableCell>{lang.language}</TableCell>
                     <TableCell>{locales.find((locale) => locale.locale === lang.language)?.title}</TableCell>
                     <TableCell>
-                      <Button
-                        variant="contained"
-                        color="info"
-                        onClick={() => {
-                          setActiveLanguage(lang.language)
-                          setLanguageModal(true)
-                          setLanguageModalType('update')
-                          setLanguageFormData(prev => ({
-                            ...prev,
-                            id: lang.id,
-                            title: locales.find((locale) => locale.locale === lang.language).title
-                          }))
-                        }}
-                      >
-                        Güncelle
-                      </Button>
+                      <ButtonGroup>
+                        <Button
+                          variant="contained"
+                          color="info"
+                          onClick={() => {
+                            setActiveLanguage(lang.language)
+                            setLanguageModal(true)
+                            setLanguageModalType('update')
+                            setLanguageFormData(prev => ({
+                              ...prev,
+                              id: lang.id,
+                              title: locales.find((locale) => locale.locale === lang.language).title
+                            }))
+                          }}
+                        >
+                          Güncelle
+                        </Button>
+                        <Button onClick={() => handleLangDelete(lang.id)} color="error" variant="contained">
+                          Sil
+                        </Button>
+                      </ButtonGroup>
                     </TableCell>
                   </TableRow>
                 ) : (
                   <TableRow key={index} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
+                    <TableCell>{lang.language}</TableCell>
                     <TableCell>Oluşturulmadı</TableCell>
                     <TableCell>
                       <Button

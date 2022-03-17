@@ -384,28 +384,34 @@ function UpdateProduct() {
                     <TableCell>{locales.find((locale) => locale.locale === lang.language)?.description}</TableCell>
                     <TableCell>{locales.find((locale) => locale.locale === lang.language)?.allergens}</TableCell>
                     <TableCell>
-                      <Button
-                        variant="contained"
-                        color="info"
-                        onClick={() => {
-                          setActiveLanguage(lang.language)
-                          setLanguageModal(true)
-                          setLanguageModalType('update')
-                          setLanguageFormData(prev => ({
-                            ...prev,
-                            id: lang.id,
-                            title: locales.find((locale) => locale.locale === lang.language).title,
-                            description: locales.find((locale) => locale.locale === lang.language).description,
-                            allergens: locales.find((locale) => locale.locale === lang.language).allergens
-                          }))
-                        }}
-                      >
-                        Güncelle
-                      </Button>
+                      <ButtonGroup>
+                        <Button
+                          variant="contained"
+                          color="info"
+                          onClick={() => {
+                            setActiveLanguage(lang.language)
+                            setLanguageModal(true)
+                            setLanguageModalType('update')
+                            setLanguageFormData(prev => ({
+                              ...prev,
+                              id: lang.id,
+                              title: locales.find((locale) => locale.locale === lang.language).title,
+                              description: locales.find((locale) => locale.locale === lang.language).description,
+                              allergens: locales.find((locale) => locale.locale === lang.language).allergens
+                            }))
+                          }}
+                        >
+                          Güncelle
+                        </Button>
+                        <Button color="error" variant="contained">
+                          Sil
+                        </Button>
+                      </ButtonGroup>
                     </TableCell>
                   </TableRow>
                 ) : (
                   <TableRow key={index} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
+                    <TableCell>{lang.language}</TableCell>
                     <TableCell>Oluşturulmadı</TableCell>
                     <TableCell>
                       <Button

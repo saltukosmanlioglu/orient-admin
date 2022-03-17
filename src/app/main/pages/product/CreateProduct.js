@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { useState, useEffect, useRef } from 'react'
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { styled } from '@mui/material/styles';
 import Box from '@mui/material/Box';
 import Breadcrumbs from '@mui/material/Breadcrumbs';
@@ -15,8 +15,6 @@ import Stack from '@mui/material/Stack';
 import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
 
-import category from 'app/main/services/controller/category';
-import subCategory from 'app/main/services/controller/sub-category';
 import file from 'app/main/services/controller/file';
 
 const Root = styled('div')(({ theme }) => ({
@@ -47,19 +45,15 @@ const Root = styled('div')(({ theme }) => ({
 function CreateProduct() {
   const [formData, setFormData] = useState({
     allergens: '',
-    categoryId: 0,
     description: '',
     image: '',
     price: '',
-    subCategoryId: undefined,
     title: '',
   })
 
-  const [categories, setCategories] = useState()
-  const [subCategories, setSubCategories] = useState()
-
   const uploadFileRef = useRef(null)
   const navigate = useNavigate()
+  const params = useParams()
 
   const handleFieldChange = (key, value) => {
     setFormData({ ...formData, [key]: value })
@@ -76,7 +70,12 @@ function CreateProduct() {
     }
 
     if (uploaded?.uploadedFilePath) {
-      product.create({ ...formData, image: uploaded.uploadedFilePath })
+      product.create({
+        ...formData,
+        categoryId: params.categoryId,
+        subCategoryId: params.subCategoryId,
+        image: uploaded.uploadedFilePath
+      })
         .then(() => {
           navigate(-1)
         })
@@ -87,15 +86,6 @@ function CreateProduct() {
         })
     }
   }
-
-  useEffect(() => {
-    category.list()
-      .then(({ data }) => setCategories(data))
-      .catch(error => console.log(error))
-    subCategory.list()
-      .then(({ data }) => setSubCategories(data))
-      .catch(error => console.log(error))
-  }, [])
 
   const renderHeader = () => {
     return (
@@ -182,58 +172,6 @@ function CreateProduct() {
                 onChange={(e) => handleFieldChange('allergens', e.currentTarget.value)}
                 value={formData.allergens}
               />
-            </Grid>
-            <Grid item xs={6}>
-              <FormControl fullWidth>
-                <InputLabel id="demo-simple-select-helper-label">Kategori</InputLabel>
-                <Select
-                  fullWidth
-                  labelId="demo-simple-select-helper-label"
-                  id="demo-simple-select-helper"
-                  value={formData.categoryId}
-                  label="Kategori"
-                  onChange={(e) => handleFieldChange('categoryId', e.target.value)}
-                >
-                  <MenuItem value={undefined}>
-                    <em>Seçiniz..</em>
-                  </MenuItem>
-                  {categories && categories.map((category) => (
-                    <MenuItem
-                      key={category.id}
-                      value={category.id}
-                      style={{ color: category.color }}
-                    >
-                      {category.title}
-                    </MenuItem>
-                  ))}
-                </Select>
-              </FormControl>
-            </Grid>
-            <Grid item xs={6}>
-              <FormControl fullWidth>
-                <InputLabel id="demo-simple-select-helper-label">Alt kategori</InputLabel>
-                <Select
-                  fullWidth
-                  labelId="demo-simple-select-helper-label"
-                  id="demo-simple-select-helper"
-                  value={formData.subCategoryId}
-                  label="Alt kategori"
-                  onChange={(e) => handleFieldChange('subCategoryId', e.target.value)}
-                >
-                  <MenuItem value={undefined}>
-                    <em>Seçiniz..</em>
-                  </MenuItem>
-                  {subCategories && subCategories.map((subCategory) => (
-                    <MenuItem
-                      key={subCategory.id}
-                      value={subCategory.id}
-                      style={{ color: subCategory.color }}
-                    >
-                      {subCategory.title}
-                    </MenuItem>
-                  ))}
-                </Select>
-              </FormControl>
             </Grid>
           </Grid>
         </Box>
