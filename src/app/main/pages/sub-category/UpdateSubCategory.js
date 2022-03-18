@@ -35,7 +35,7 @@ import category from 'app/main/services/controller/category';
 import subCategory from 'app/main/services/controller/sub-category';
 import subCategoryLocale from 'app/main/services/controller/sub-category-locale';
 import language from 'app/main/services/controller/language';
-import product from 'app/main/services/controller/product';
+import productService from 'app/main/services/controller/product';
 
 const Root = styled('div')(({ theme }) => ({
   '& .FaqPage-header': {
@@ -182,7 +182,7 @@ function UpdateSubCategory() {
       .then(({ data }) => setLanguages(data))
       .catch((err) => console.log(err))
 
-    product.list({ subCategoryId: Number(params.id) })
+    productService.list({ subCategoryId: Number(params.id) })
       .then(({ data }) => setProducts(data))
       .catch((err) => console.log(err))
   }, [])

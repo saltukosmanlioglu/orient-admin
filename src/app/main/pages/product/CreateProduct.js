@@ -74,12 +74,12 @@ function CreateProduct() {
         image: uploaded.uploadedFilePath
       })
         .then(() => {
-          navigate(-1)
+          // navigate(-1)
         })
     } else {
       product.create({ ...formData })
         .then(() => {
-          navigate(-1)
+          // navigate(-1)
         })
     }
   }
