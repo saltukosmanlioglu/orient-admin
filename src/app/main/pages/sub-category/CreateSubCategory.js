@@ -99,7 +99,7 @@ function CreateSubCategory() {
       <div role="presentation">
         <Breadcrumbs aria-label="breadcrumb">
           <Button color="inherit" href="/">Anasayfa</Button>
-          <Button color="inherit" href="/pages/sub-categories">Alt kategoriler</Button>
+          <Button onClick={() => navigate(-1)}>Alt kategoriler</Button>
           <Typography color="text.primary">Alt kategori oluştur</Typography>
         </Breadcrumbs>
       </div>

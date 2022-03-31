@@ -229,7 +229,7 @@ function UpdateSubCategory() {
       <div role="presentation">
         <Breadcrumbs aria-label="breadcrumb">
           <Button href="/">Anasayfa</Button>
-          <Button href="/pages/sub-categories">Alt kategoriler</Button>
+          <Button onClick={() => navigate(-1)}>Alt kategoriler</Button>
           <Typography color="text.primary">{formData.title}</Typography>
         </Breadcrumbs>
       </div>
